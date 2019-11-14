@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{#    <input id="email" style="display: none" value="{{ email }}">#}
+    <button onclick="goURL(this)" value="{{ email }}">Педагог</button>
+    <button onclick="goURL(this)" value="{{ email }}">Участник</button>
+
+<script>
+    function goURL(el) {
+        let url=new URL(document.location.href);
+        url.pathname='reg';
+        url.searchParams.set('who',el.innerText);
+        url.searchParams.set('email',el.value);
+        document.location=url
+        
+    }
+</script>
+</body>
+</html>

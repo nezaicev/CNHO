@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <form action="" class="was-validated" method="post">
+            <div class=""><h3 class="text-center mt-4"> Введите ваш email</h3>
+                {% csrf_token%}
+                {{ form.email }}
+                <button>Далее -></button>
+            </div>
+    </form>
+
+
+{% endblock %}

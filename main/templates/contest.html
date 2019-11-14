@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+          <div class="d-flex justify-content-center mt-4 text-info ">
+        <h2>Регистрация</h2>
+    </div>
+
+    <div class="container d-flex justify-content-between mt-4 ">
+    {{ teacher_id }}
+
+        <form action="{% url 'contest_form_registration_url' %}" class="was-validated" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <span class="badge badge-pill badge-info mb-3 mt-2">Данные:</span>
+
+
+            <div class="input-group  mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text " id="">{{ form.nomination.label }}</span>
+                </div>
+                {{ form.nomination }}
+            </div>
+
+                        <div class="input-group  mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text " id="">Педагог </span>
+                </div>
+
+            </div>
+{#                    <input id="id_teacher" name="teacher" type="hidden" value="{{ teacher_id }}">#}
+                  <div class="input-group  mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text " id=""> Рег номер</span>
+                </div>
+                {{ form.reg_number }}
+            </div>
+
+            <div class="input-group  mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text " id="">{{ form.title.label }}</span>
+                </div>
+
+            </div>
+
+             <input  type="hidden" name="teacher" value="{{ teacher_id  }}" required id="id_teacher">
+
+            <div class="d-flex justify-content-end">
+                <button type="submit"  class="btn btn-outline-primary mt-2 mb-4 ">Далее</button>
+            </div>
+
+        </form>
+    </div>
+{% endblock %}

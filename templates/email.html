@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    {{ data }}
+    <form action='' method="post">
+        {% csrf_token %}
+        <lable>Введите Ваш email</lable>
+        {{ form.email }}
+        <button>Далее -></button>
+    </form>
+
+</body>
+</html>
