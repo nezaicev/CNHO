@@ -36,6 +36,7 @@ class Teacher(models.Model):
     phone = models.CharField('Телефон', max_length=15, blank=True)
     age = models.CharField('Возрастная категория', max_length=30, blank=True)
     status=models.BooleanField(default=True)
+    info=models.CharField(max_length=100, blank=True)
 
 
 class Child(models.Model):

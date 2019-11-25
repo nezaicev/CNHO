@@ -1,4 +1,4 @@
-import django.core.serializers as to_json
+
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.generic import View, TemplateView
@@ -30,10 +30,10 @@ class BaseView(TemplateView):
         if request.session.get('contest') == 'artakiada':
             context = {'form': ArtakiadaContestForm, 'teacher': teacher, 'email': request.session.get('email')}
             return render(request, 'artakiada.html', context)
-        # if request.session.get('contest')=='mymoskvichi':
+        # if request.session.get('contest')=='nrusheva':
         #     context={'form':''}
         #     return render(request)
-        # if request.session.get('contest')=='nrusheva':
+        # if request.session.get('contest')=='mymoskvichi':
         #     context={'form':''}
         #     return render(request)
 
@@ -73,7 +73,7 @@ class Email(BaseView, View):
                 return self.redirect_contest(request)
 
             except:
-                context = {'email': request.POST['email'], 'form': TeacherForm}
+                context = {'email': request.POST['email'], 'form': TeacherForm, 'contest':request.session.get('contest')}
                 return render(request, 'teacher.html', context)
         else:
             try:
@@ -94,6 +94,4 @@ class TeacherView(BaseView, View):
         if bound_form.is_valid():
             teacher = bound_form.save()
             request.session['id'] = teacher.id
-            # request.session['teacher']=to_json.serialize('json',teacher)
-            # context = {'teacher_id': teacher.id}
             return self.redirect_contest(request)

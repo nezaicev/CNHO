@@ -14,7 +14,7 @@ class EmailForm(forms.ModelForm):
 class TeacherForm(forms.ModelForm):
     class Meta:
         model = Teacher
-        fields = ['fio', 'region', 'district', 'city', 'school', 'position', 'age', 'email', 'phone']
+        fields = ['fio', 'region', 'district', 'city', 'school', 'position', 'age', 'email', 'phone', 'info']
         widgets = {
             'fio': forms.HiddenInput(attrs={'name': 'fio', 'id': 'fio'}),
             'email': forms.HiddenInput(attrs={'name': 'email', 'id': 'email'}),
@@ -27,6 +27,7 @@ class TeacherForm(forms.ModelForm):
             'position': forms.Select(attrs={'class': 'custom-select '}, choices=lists.POSITIONS),
             'age': forms.Select(attrs={'class': 'custom-select'}, choices=lists.AGE_TEACHER),
             'phone': forms.TextInput(attrs={'class': 'form-control col-4'}),
+            'info': forms.TextInput(attrs={'class': 'form-control col-1','required': ''}),
 
         }
 
