@@ -3,7 +3,7 @@ from django.conf.urls.static import static
 from django.urls import path
 
 from .views import Index, Status, Email, TeacherView, BaseView
-from .forms import ArtakiadaContestForm, NRushevaContestForm
+from .forms import ArtakiadaContestForm, NRushevaContestForm, MymoskviciContestForm
 
 urlpatterns = [
     path('', Index.as_view(template='index.html'), name='index'),
@@ -14,6 +14,8 @@ urlpatterns = [
          name='artakiada_form_registration_url'),
     path('contest_reg/nrusheva', BaseView.as_view(template='finish_registration.html', form=NRushevaContestForm),
          name='nrusheva_form_registration_url'),
+    path('contest_reg/mymoskvichi', BaseView.as_view(template='finish_registration.html', form=MymoskviciContestForm),
+         name='mymoskvichi_form_registration_url'),
 
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

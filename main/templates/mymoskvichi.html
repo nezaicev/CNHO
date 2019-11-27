@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+
+
+
+
+{% block content %}
+    <div class="d-flex justify-content-center mt-4 text-info ">
+        <h2>Регистрация</h2>
+    </div>
+
+    <div class="container d-flex justify-content-between mt-4 ">
+
+        <form action="{% url 'mymoskvichi_form_registration_url' %}" class="was-validated" method="POST"
+              enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <span class="badge badge-pill badge-info mb-3 mt-2">Данные участника:</span>
+
+            {{ form.fio }}
+
+            <div class="input-group  mb-2" id="fio_block">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="">Ф.И.О. участника</span>
+                </div>
+
+                <input class="form-control" placeholder="Фамилия" name="tmp_fio" required>
+                <input class="form-control" placeholder="Имя" name="tmp_fio" required>
+                <input class="form-control" placeholder="Отчество" name="tmp_fio" required>
+
+            </div>
+
+            <div class="input-group  mb-3 mt-2">
+                <button class="btn  btn-outline-success btn-sm"
+                        onclick="addBlockFio(document.getElementById('main_fio_block'),document.getElementById('fio_block').cloneNode(true))">
+                    Добавить участника
+                </button>
+            </div>
+
+            <div id="main_fio_block">
+            </div>
+            <div class="input-group  mb-4 mt-5" id="fio_block">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="">Номинация и название</span>
+                </div>
+                {{ form.theme }}
+                {{ form.author_name }}
+            </div>
+
+
+            {% if teacher.status %}
+
+                <input type="hidden" name="teacher" value="{{ teacher.id }}" id="id_teacher">
+                <input type='hidden' name="fio_teacher" value="{{ teacher.fio }}" id="fio_teacher">
+                <input type='hidden' name="region" value="{{ teacher.region }}" id="region">
+                <input type='hidden' name="city" value="{{ teacher.city }}" id="city">
+                <input type='hidden' name="district" value="{{ teacher.district }}" id="district">
+                <input type='hidden' name="school" value="{{ teacher.school }}" id="school">
+                <input type='hidden' name="email" value="{{ teacher.email }}" id="email">
+
+                <div class="d-flex justify-content-end">
+                    <button type="submit" onclick="setValueFIO('fio','tmp_fio');"
+                            class="btn btn-outline-primary mt-2 mb-4 ">
+                        Далее
+                    </button>
+                </div>
+
+            {% else %}
+
+                <input type='hidden' name="email" value="{{ email }}" id="email">
+                <input type="hidden" name="teacher" value="{{ teacher.id }}" id="id_teacher">
+
+                <div class="input-group  mb-4">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text " id="">{{ form.region.label }}</span>
+                    </div>
+                    {{ form.region }}
+                    {{ form.district }}
+                    {{ form.city }}
+                </div>
+
+
+                <div class="input-group  mb-4">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text " id="">{{ form.school.label }}</span>
+                    </div>
+                    {{ form.school }}
+                </div>
+
+                <div class="input-group  mb-4">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="">Ф.И.О. педагога</span>
+                    </div>
+                    {{ form.fio_teacher }}
+                    <input class="form-control" placeholder="Фамилия" name="tmp_fio_teacher" required>
+                    <input class="form-control" placeholder="Имя" name="tmp_fio_teacher" required>
+                    <input class="form-control" placeholder="Отчество" name="tmp_fio_teacher" required>
+
+                </div>
+
+
+                <div class="d-flex justify-content-end">
+                    <button type="submit"
+                            onclick="setValueFIO('fio_teacher','tmp_fio_teacher');setValueFIO('fio','tmp_fio');"
+                            class="btn btn-outline-primary mt-2 mb-4 ">
+                        Далее
+                    </button>
+                </div>
+
+            {% endif %}
+
+
+        </form>
+    </div>
+{% endblock %}
+ %}#}

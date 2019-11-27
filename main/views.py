@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.generic import View, TemplateView
 from main.models import Teacher
-from main.forms import TeacherForm, EmailForm, ArtakiadaContestForm, NRushevaContestForm
+from main.forms import TeacherForm, EmailForm, ArtakiadaContestForm, NRushevaContestForm, MymoskviciContestForm
 
 
 class BaseView(TemplateView):
@@ -19,7 +19,7 @@ class BaseView(TemplateView):
         bound_form = self.form(request.POST, request.FILES)
         if bound_form.is_valid():
             bound_form.save()
-        return render(request, self.template, context)
+            return render(request, self.template, context)
 
     @classmethod
     def redirect_contest(cls, request):
@@ -31,12 +31,11 @@ class BaseView(TemplateView):
             context = {'form': ArtakiadaContestForm, 'teacher': teacher, 'email': request.session.get('email')}
             return render(request, 'artakiada.html', context)
         if request.session.get('contest')=='nrusheva':
-            print(request.session.get('contest'))
             context={'form':NRushevaContestForm, 'teacher': teacher, 'email': request.session.get('email')}
             return render(request,'nrusheva.html',context)
-        # if request.session.get('contest')=='mymoskvichi':
-        #     context={'form':''}
-        #     return render(request)
+        if request.session.get('contest')=='mymoskvichi':
+            context={'form':MymoskviciContestForm,'teacher':teacher,'email': request.session.get('email')}
+            return render(request, 'mymoskvichi.html', context)
 
     @classmethod
     def finish(cls, request, *args, **kwargs):

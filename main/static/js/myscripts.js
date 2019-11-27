@@ -36,11 +36,34 @@ function regionChanged(value) {
             if (item!==undefined){
                 let str=item.value.trim();
                 str = str[0].toUpperCase() + str.substring(1).toLowerCase();
-                value+=' '+str;
+                console.log(i);
+                if (((i)%3)!==0 || i===0){
+                    value+=' '+str;
+                }
+                else {
+                    value+=', '+str;
+                }
+
             }
+
         });
         let el=document.getElementById(id);
         el.value=value;
 
     }
 
+   function addBlockFio(parent,child){
+            let button=document.createElement('button');
+            button.innerHTML='&#10006';
+            button.className='btn btn-sm btn-danger delete-button-block-fio';
+            button.addEventListener('click',function () {child.remove()
+            });
+            child.appendChild(button);
+            child.querySelectorAll('input').forEach(function (item,i) {
+                item.value='';
+                if (item.lastChild){item.value+=','}
+            });
+            parent.appendChild(child);
+
+
+        }

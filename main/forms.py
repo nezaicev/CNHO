@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import widgets
-from main.models import Teacher, Artakiada, NRusheva
+from main.models import Teacher, Artakiada, NRusheva, Mymoskvichi
 from main import lists
 
 
@@ -64,7 +64,7 @@ class BaseContestForm(forms.ModelForm):
         }
 
 
-class ArtakiadaContestForm(forms.ModelForm):
+class ArtakiadaContestForm(BaseContestForm):
     class Meta(BaseContestForm.Meta):
         model = Artakiada
         exclude=('image','material','age','description','author_name','gender','theme','format')
@@ -73,4 +73,10 @@ class ArtakiadaContestForm(forms.ModelForm):
 class NRushevaContestForm(BaseContestForm):
     class Meta(BaseContestForm.Meta):
         model = NRusheva
+
+
+class MymoskviciContestForm(BaseContestForm):
+    class Meta(BaseContestForm.Meta):
+        model=Mymoskvichi
+        exclude = ('image', 'material', 'age', 'description', 'gender', 'format','level')
 
