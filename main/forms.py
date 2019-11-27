@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import widgets
-from main.models import Teacher, Artakiada
+from main.models import Teacher, Artakiada, NRusheva
 from main import lists
 
 
@@ -27,30 +27,16 @@ class TeacherForm(forms.ModelForm):
             'position': forms.Select(attrs={'class': 'custom-select '}, choices=lists.POSITIONS),
             'age': forms.Select(attrs={'class': 'custom-select'}, choices=lists.AGE_TEACHER),
             'phone': forms.TextInput(attrs={'class': 'form-control col-4'}),
-            'info': forms.TextInput(attrs={'class': 'form-control col-1','required': ''}),
+            'info': forms.TextInput(attrs={'class': 'form-control col-1', 'required': ''}),
 
         }
 
 
-#
-# class MSKCHContestForm(forms.ModelForm):
-#     class Meta:
-#         model = Mskch
-#         fields = ['title', 'teacher', 'fio_teacher']
-#         widgets = {
-#             # 'teacher': forms.HiddenInput(attrs={'name': 'teacher', 'id': 'teacher'}),
-#
-#             'title': forms.TextInput(),
-#             'teacher': forms.HiddenInput(attrs={'name': 'teacher', 'id': 'teacher'}),
-#             'fio_teacher': forms.HiddenInput(),
-#
-#         }
-
-
-class ArtakiadaContestForm(forms.ModelForm):
+class BaseContestForm(forms.ModelForm):
     class Meta:
-        model = Artakiada
-        fields = ['fio', 'region', 'city', 'district', 'school', 'level', 'teacher', 'email', 'fio_teacher']
+        model = None
+        fields = ['fio', 'region', 'city', 'district', 'school', 'level', 'teacher', 'email', 'fio_teacher', 'age',
+                  'gender', 'theme', 'material', 'author_name', 'format', 'description','image']
         widgets = {
             'fio': forms.HiddenInput(attrs={'name': 'fio', 'id': 'fio'}),
             'level': forms.Select(attrs={'class': 'custom-select'}, choices=lists.LEVEL),
@@ -63,5 +49,28 @@ class ArtakiadaContestForm(forms.ModelForm):
             'email': forms.HiddenInput(attrs={'name': 'email', 'id': 'id_email'}),
             'teacher': forms.HiddenInput(attrs={'name': 'teacher', 'id': 'id_teacher'}),
             'fio_teacher': forms.HiddenInput(attrs={'name': 'fio_teacher', 'id': 'fio_teacher'}),
+            'image': forms.FileInput(attrs={'class': 'form-control-file', 'type': 'file'}),
+            'gender': forms.Select(attrs={'class': 'custom-select'}),
+            'age': forms.Select(attrs={'class': 'custom-select'}),
+            'theme': forms.Select(attrs={'class': 'custom-select '}),
+            'author_name': forms.TextInput(attrs={'class': 'form-control ', 'placeholder': 'Авторское название'}),
+            'material': forms.Select(attrs={'class': 'form-control ', 'placeholder': 'Материал (Гуашь)'}),
+            'format': forms.Select(attrs={'class': 'custom-select '}),
+            'description': forms.Textarea(attrs={'class': 'form-control ', 'rows': '3',
+                                                 'placeholder': 'Краткая, сжатая, характеристика содержания работы'}),
+
+
 
         }
+
+
+class ArtakiadaContestForm(forms.ModelForm):
+    class Meta(BaseContestForm.Meta):
+        model = Artakiada
+        exclude=('image','material','age','description','author_name','gender','theme','format')
+
+
+class NRushevaContestForm(BaseContestForm):
+    class Meta(BaseContestForm.Meta):
+        model = NRusheva
+

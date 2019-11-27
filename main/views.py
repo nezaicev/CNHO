@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.generic import View, TemplateView
 from main.models import Teacher
-from main.forms import TeacherForm, EmailForm, ArtakiadaContestForm
+from main.forms import TeacherForm, EmailForm, ArtakiadaContestForm, NRushevaContestForm
 
 
 class BaseView(TemplateView):
@@ -16,7 +16,7 @@ class BaseView(TemplateView):
 
     def post(self, request, *args, **kwargs):
         context = {'form': self.form, 'teacher_id': request.session.get('id')}
-        bound_form = self.form(request.POST)
+        bound_form = self.form(request.POST, request.FILES)
         if bound_form.is_valid():
             bound_form.save()
         return render(request, self.template, context)
@@ -30,9 +30,10 @@ class BaseView(TemplateView):
         if request.session.get('contest') == 'artakiada':
             context = {'form': ArtakiadaContestForm, 'teacher': teacher, 'email': request.session.get('email')}
             return render(request, 'artakiada.html', context)
-        # if request.session.get('contest')=='nrusheva':
-        #     context={'form':''}
-        #     return render(request)
+        if request.session.get('contest')=='nrusheva':
+            print(request.session.get('contest'))
+            context={'form':NRushevaContestForm, 'teacher': teacher, 'email': request.session.get('email')}
+            return render(request,'nrusheva.html',context)
         # if request.session.get('contest')=='mymoskvichi':
         #     context={'form':''}
         #     return render(request)
