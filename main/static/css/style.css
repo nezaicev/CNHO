@@ -1,4 +1,14 @@
+.name-contest{
+    color: rgba(28, 116, 131, 0.88);
+    text-align: center;
+    text-decoration: none;
 
+}
+a:hover { text-decoration: none;}
+.btn-primary{
+    background-color: #3fb7e4;
+    border: none;
+}
 .form-control-file{
     content: "Загрузить работу";
 }

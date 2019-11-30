@@ -1,12 +1,22 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <a href="{% url 'check_existence_url' 'teacher' %}">
-        <button>Педагог</button>
-    </a>
 
-    <a href="{% url 'check_existence_url' 'participant' %}">
-        <button>Участник</button>
-    </a>
+<div align="center">
+     <div class="col-sm-8 " align="center">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Кем Вы являетесь ?</h5>
+        <p class="card-text">Педагогам будет предложено заполнить дополнительную форму</p>
+          <a href="{% url 'check_existence_url' 'teacher' %}" class="btn btn-primary mr-4"> Педагог</a>
+          <a href="{% url 'check_existence_url' 'participant' %}"class="btn btn-primary">Родитель или представитель участника</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+
 
 {% endblock %}

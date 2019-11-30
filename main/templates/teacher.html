@@ -10,69 +10,94 @@
         <form action="{% url 'teacher_form_registration_url' %}" class="was-validated" method="POST"
               enctype="multipart/form-data">
             {% csrf_token %}
+            {% if status == '1' %}
 
-            <span class="badge badge-pill badge-info mb-3 mt-2">Педагог:</span>
+                <span class="badge badge-pill badge-info mb-3 mt-2">Педагог:</span>
 
 
-            <div class="input-group  mb-4">
-                <div class="input-group-prepend">
-                    <span class="input-group-text" id="">Ф.И.О. педагога</span>
-                </div>
-                {{ form.fio }}
-                <input class="form-control" placeholder="Фамилия" name="tmp_fio" required>
-                <input class="form-control" placeholder="Имя" name="tmp_fio" required>
-                <input class="form-control" placeholder="Отчество" name="tmp_fio" required>
+                <div class="input-group  mb-4">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="">Ф.И.О. педагога</span>
+                    </div>
+                    {{ form.fio }}
+                    <input class="form-control" placeholder="Фамилия" name="tmp_fio" required>
+                    <input class="form-control" placeholder="Имя" name="tmp_fio" required>
+                    <input class="form-control" placeholder="Отчество" name="tmp_fio" required>
 
-            </div>
-
-            <div class="input-group  mb-4">
-                <div class="input-group-prepend">
-                    <span class="input-group-text " id="">{{ form.region.label }}</span>
                 </div>
 
-                {{ form.region }}
-                {{ form.district }}
-                {{ form.city }}
-            </div>
+                <div class="input-group  mb-4">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text " id="">{{ form.region.label }}</span>
+                    </div>
 
-            <div class="input-group  mb-4">
-                <div class="input-group-prepend">
-                    <span class="input-group-text " id="">Образовательная организация</span>
+                    {{ form.region }}
+                    {{ form.district }}
+                    {{ form.city }}
                 </div>
-                {{ form.school }}
-            </div>
 
-             {% if contest == 'artakiada' %}
-            <div class="input-group  mb-4">
-                <div class="input-group-prepend">
-                    <span class="input-group-text " id=""> Количество участников первого тура</span>
+                <div class="input-group  mb-4">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text " id="">Образовательная организация</span>
+                    </div>
+                    {{ form.school }}
                 </div>
-                {{ form.info }}
-            </div>
-            {% endif %}
+
+                {% if contest == 'artakiada' %}
+                    <div class="input-group  mb-4">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text " id=""> Количество участников первого тура</span>
+                        </div>
+                        {{ form.info }}
+                    </div>
+                {% endif %}
 
 
-            <div class="input-group  mb-4">
+                <div class="input-group  mb-4">
 
-                <div class="input-group-prepend">
-                    <span class="input-group-text" id="">{{ form.position.label }}</span>
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="">{{ form.position.label }}</span>
+                    </div>
+                    {{ form.position }}
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="">{{ form.age.label }}</span>
+                    </div>
+                    {{ form.age }}
+
                 </div>
-                {{ form.position}}
-                <div class="input-group-prepend">
-                    <span class="input-group-text" id="">{{ form.age.label }}</span>
-                </div>
-                {{ form.age }}
+                <div class="input-group  mb-4">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="">{{ form.phone.label }}</span>
+                    </div>
+                    {{ form.phone }}
 
-            </div>
-            <div class="input-group  mb-4">
-                <div class="input-group-prepend">
-                    <span class="input-group-text" id="">{{ form.phone.label }}</span>
-                </div>
-                {{ form.phone }}
+                    <input type="hidden" value="{{ email }}" name="email" id="email">
+                    <input type="hidden" value="{{ status }}" name="status" id="id_status">
 
+                </div>
+            {% else %}
+                {#                -----if not teacher----------#}
+                <div class="input-group  mb-4">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="">Ф.И.О.</span>
+                    </div>
+                    {{ form.fio }}
+                    <input class="form-control" placeholder="Фамилия" name="tmp_fio" required>
+                    <input class="form-control" placeholder="Имя" name="tmp_fio" required>
+                    <input class="form-control" placeholder="Отчество" name="tmp_fio" required>
+                </div>
+                <div class="input-group  mb-4">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text " id="">{{ form.region.label }}</span>
+                    </div>
+
+                    {{ form.region }}
+                    {{ form.district }}
+                    {{ form.city }}
+                </div>
                 <input type="hidden" value="{{ email }}" name="email" id="email">
-
-            </div>
+                <input type="hidden" value="{{ status }}" name="status" id="id_status">
+            {% endif %}
 
             <div class="d-flex justify-content-end">
                 <button type="submit" onclick="setValueFIO('fio','tmp_fio')" class="btn btn-outline-primary mt-2 mb-4 ">

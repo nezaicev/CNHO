@@ -7,14 +7,22 @@ from main import lists
 class EmailForm(forms.ModelForm):
     class Meta:
         model = Teacher
-        fields = ['email']
-        widgets = {'email': forms.EmailInput()}
+        fields = ['email', 'status', 'info']
+        widgets = {
+            'email': forms.EmailInput(
+                attrs={'class': "form-control col-6", 'oninvalid': "this.setCustomValidity('Укажите Ваш Email')",
+                       'required': ''}),
+            'status': forms.Select(attrs={'class': 'custom-select col-7',
+                                          'required': 'Укажите Ваш статус'},
+                                   choices=lists.REG_STATUS),
+            'info': forms.HiddenInput(attrs={'name': 'contest', 'id': 'contest'})
+        }
 
 
 class TeacherForm(forms.ModelForm):
     class Meta:
         model = Teacher
-        fields = ['fio', 'region', 'district', 'city', 'school', 'position', 'age', 'email', 'phone', 'info']
+        fields = ['fio', 'region', 'district', 'city', 'school', 'position', 'age', 'email', 'phone', 'info', 'status']
         widgets = {
             'fio': forms.HiddenInput(attrs={'name': 'fio', 'id': 'fio'}),
             'email': forms.HiddenInput(attrs={'name': 'email', 'id': 'email'}),
@@ -36,7 +44,7 @@ class BaseContestForm(forms.ModelForm):
     class Meta:
         model = None
         fields = ['fio', 'region', 'city', 'district', 'school', 'level', 'teacher', 'email', 'fio_teacher', 'age',
-                  'gender', 'theme', 'material', 'author_name', 'format', 'description','image']
+                  'gender', 'theme', 'material', 'author_name', 'format', 'description', 'image']
         widgets = {
             'fio': forms.HiddenInput(attrs={'name': 'fio', 'id': 'fio'}),
             'level': forms.Select(attrs={'class': 'custom-select'}, choices=lists.LEVEL),
@@ -59,15 +67,13 @@ class BaseContestForm(forms.ModelForm):
             'description': forms.Textarea(attrs={'class': 'form-control ', 'rows': '3',
                                                  'placeholder': 'Краткая, сжатая, характеристика содержания работы'}),
 
-
-
         }
 
 
 class ArtakiadaContestForm(BaseContestForm):
     class Meta(BaseContestForm.Meta):
         model = Artakiada
-        exclude=('image','material','age','description','author_name','gender','theme','format')
+        exclude = ('image', 'material', 'age', 'description', 'author_name', 'gender', 'theme', 'format')
 
 
 class NRushevaContestForm(BaseContestForm):
@@ -77,6 +83,5 @@ class NRushevaContestForm(BaseContestForm):
 
 class MymoskviciContestForm(BaseContestForm):
     class Meta(BaseContestForm.Meta):
-        model=Mymoskvichi
-        exclude = ('image', 'material', 'age', 'description', 'gender', 'format','level')
-
+        model = Mymoskvichi
+        exclude = ('image', 'material', 'age', 'description', 'gender', 'format', 'level')

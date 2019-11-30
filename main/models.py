@@ -26,15 +26,15 @@ class Contest(models.Model):
 
 class Teacher(models.Model):
     fio = models.CharField('ФИО педагога', max_length=40, blank=False)
-    school = models.CharField('Образовательная организация', max_length=150, blank=False)
-    position = models.CharField('Должность', max_length=100, blank=False)
-    region = models.CharField('Регион', max_length=101, blank=False)
+    school = models.CharField('Образовательная организация', max_length=150, blank=True)
+    position = models.CharField('Должность', max_length=100, blank=True)
+    region = models.CharField('Регион', max_length=101, blank=True)
     city = models.CharField('Населенный пункт', max_length=101, blank=True)
     district = models.CharField('Округ', max_length=101, blank=True)
     email = models.EmailField('email', blank=False, unique=True)
     phone = models.CharField('Телефон', max_length=15, blank=True)
     age = models.CharField('Возрастная категория', max_length=30, blank=True)
-    status = models.BooleanField(default=True)
+    status = models.CharField('Статус', max_length=10, blank=False)
     info = models.CharField(max_length=100, blank=True)
 
 
