@@ -4,6 +4,7 @@ from django.views.generic import View, TemplateView
 from django.contrib import messages
 from main.models import Teacher
 from main.forms import TeacherForm, EmailForm, ArtakiadaContestForm, NRushevaContestForm, MymoskviciContestForm
+from main.tasks import  generate_pdf
 
 
 class BaseView(TemplateView):
@@ -18,8 +19,9 @@ class BaseView(TemplateView):
         context = {'form': self.form, 'teacher_id': request.session.get('id')}
         bound_form = self.form(request.POST, request.FILES)
         if bound_form.is_valid():
-            bound_form.save()
+            new_obj=bound_form.save()
             messages.add_message(request, messages.SUCCESS, 'Ваши данные отправлены')
+            generate_pdf.delay(new_obj.id)
             return render(request, self.template, context)
 
     @classmethod
@@ -66,45 +68,6 @@ class Index(BaseView, View):
                        'form': TeacherForm, 'contest': request.session.get('contest')}
             return render(request, 'teacher.html', context)
 
-
-#
-# class Status(BaseView, View):
-#     template = 'choice.html'
-#
-#     def get(self, request, *args, **kwargs):
-#         request.session['contest'] = self.kwargs['contest']
-#         return super().get(request)
-
-#
-# class Email(BaseView, View):
-#     template = 'auth_by_email.html'
-#     form = EmailForm
-#
-#     def get(self, request, *args, **kwargs):
-#         request.session['status'] = self.kwargs['status']
-#         return super().get(request)
-#
-#     def post(self, request, *args, **kwargs):
-#         request.session['email'] = request.POST['email']
-#         if request.session.get('status') == 'teacher':
-#
-#             try:
-#                 request.session['id'] = Teacher.objects.get(email=request.POST['email']).id
-#                 return self.redirect_contest(request)
-#
-#             except:
-#                 context = {'email': request.POST['email'], 'form': TeacherForm,
-#                            'contest': request.session.get('contest')}
-#                 return render(request, 'teacher.html', context)
-#         else:
-#             try:
-#                 request.session['id'] = Teacher.objects.get(email='user@user.ru').id
-#             except:
-#                 user = Teacher.objects.create(status=False, fio='user', region='0', school='user', email='user@user.ru',
-#                                               position='user')
-#                 request.session['id'] = user.id
-#
-#             return self.redirect_contest(request)
 
 
 class TeacherView(BaseView, View):

@@ -31,7 +31,7 @@ class TeacherForm(forms.ModelForm):
             'city': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Населенный пункт',
                                            'type': 'hidden', 'required': '', 'value': 'г. Москва'}),
             'district': forms.Select(attrs={'class': 'custom-select', 'type': 'hidden'}, choices=lists.DISTRICT),
-            'school': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Школа №123'}),
+            'school': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Школа №123', 'required':''}),
             'position': forms.Select(attrs={'class': 'custom-select '}, choices=lists.POSITIONS),
             'age': forms.Select(attrs={'class': 'custom-select'}, choices=lists.AGE_TEACHER),
             'phone': forms.TextInput(attrs={'class': 'form-control col-4'}),
