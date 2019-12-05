@@ -3,7 +3,6 @@ from django.db import models
 from main import lists,utils
 
 
-
 class Contest(models.Model):
 
     id = models.AutoField(primary_key=True)
@@ -21,6 +20,8 @@ class Contest(models.Model):
     def save(self, *args, **kwargs):
         self.reg_number = int(time.time())
         super(Contest, self).save(*args, **kwargs)
+
+
 
     class Meta:
         abstract = True
@@ -41,8 +42,26 @@ class Teacher(models.Model):
 
 
 class Artakiada(Contest):
+    full_name = 'АРТакиада "Изображение и слово"'
+    name = 'АРТакиада "Изображение и слово"'
+
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, null=True)
     level = models.CharField(max_length=2, choices=lists.LEVEL, blank=False, verbose_name='Класс')
+
+    def get_parm_for_pdf(self):
+        parameters = (
+            ('Конкурс', self.name),
+            ('Регистрационный №', self.reg_number),
+            ('Ф.И.О. участника', self.fio),
+            ('Учебное зав.', self.school),
+            ('Класс', self.get_level_display()),
+            ('Регион', self.teacher.get_region_display()),
+            ('Город', self.teacher.city),
+            ('Округ', self.teacher.get_district_display()),
+            ('Ф.И.О. педагога', self.fio_teacher),
+            ('Email педагога', self.teacher.email)
+        )
+        return parameters
 
 
 class NRusheva(Contest):

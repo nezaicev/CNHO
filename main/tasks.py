@@ -1,29 +1,31 @@
 from celery import shared_task
+import secret
 from main import utils
-from main.models import NRusheva
+from main.models import NRusheva, Artakiada, Mymoskvichi
 
 
 @shared_task
-def generate_pdf(obj_id):
+def nrusheva_tasks(obj_id):
     obj = NRusheva.objects.get(id=obj_id)
     utils.generate_barcode(obj.reg_number)
     utils.generate_pdf(obj.get_parm_for_pdf(), obj.name, obj.reg_number)
+    utils.send_mail_contest(secret.EMAIL_NRUSHEVA,obj.email,obj.reg_number,'test',obj.name)
+
+
+@shared_task
+def artakiada_tasks(obj_id):
+    obj = Artakiada.objects.get(id=obj_id)
+    utils.generate_barcode(obj.reg_number)
+    utils.generate_pdf(obj.get_parm_for_pdf(), obj.name, obj.reg_number)
+    utils.send_mail_contest(secret.EMAIL_ARTAKIADA, obj.email, obj.reg_number, 'test', obj.name)
+
+@shared_task
+def mymoskvici_tasks(obj_id):
+    obj = Mymoskvichi.objects.get(id=obj_id)
+    utils.send_mail_contest(secret.EMAIL_ARTAKIADA, obj.email, obj.reg_number, 'test', obj.name)
 
 
 
-def send_mail_contest(secret, reg_number, name_contest, email, message):
-    connection = get_connection(host=settings.EMAIL_CONTEST['host'],
-                                port=settings.EMAIL_CONTEST['port'],
-                                username=secret['user'],
-                                password=secret['password'],
-                                use_tls=settings.EMAIL_CONTEST['use_tls'])
 
-    subject, from_email = 'tema', secret['user']
-    msg = EmailMultiAlternatives(subject,subject, from_email, email, connection=connection)
-    msg.content_subtype = "html"
-    attached_file = os.path.join(settings.MEDIA_ROOT, 'pdf', f'{reg_number}.pdf')
-    msg.attach_file(attached_file,mimetype='text/html')
-
-    connection.close()
 
 

@@ -4,7 +4,7 @@ from django.views.generic import View, TemplateView
 from django.contrib import messages
 from main.models import Teacher
 from main.forms import TeacherForm, EmailForm, ArtakiadaContestForm, NRushevaContestForm, MymoskviciContestForm
-from main.tasks import  generate_pdf
+from main.tasks import nrusheva_tasks, artakiada_tasks, mymoskvici_tasks
 
 
 class BaseView(TemplateView):
@@ -19,9 +19,14 @@ class BaseView(TemplateView):
         context = {'form': self.form, 'teacher_id': request.session.get('id')}
         bound_form = self.form(request.POST, request.FILES)
         if bound_form.is_valid():
-            new_obj=bound_form.save()
+            new_obj = bound_form.save()
             messages.add_message(request, messages.SUCCESS, 'Ваши данные отправлены')
-            generate_pdf.delay(new_obj.id)
+            if request.session.get('contest') == 'nrusheva':
+                nrusheva_tasks.delay(new_obj.id)
+            if request.session.get('contest') == 'artakiada':
+                artakiada_tasks.delay(new_obj.id)
+            if request.session.get('contest') == 'mymoskvichi':
+                mymoskvici_tasks.delay(new_obj.id)
             return render(request, self.template, context)
 
     @classmethod
@@ -67,7 +72,6 @@ class Index(BaseView, View):
             context = {'status': request.POST['status'], 'email': request.session.get('email'),
                        'form': TeacherForm, 'contest': request.session.get('contest')}
             return render(request, 'teacher.html', context)
-
 
 
 class TeacherView(BaseView, View):
