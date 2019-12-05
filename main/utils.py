@@ -1,8 +1,7 @@
 import re
 import os
-from typing import NamedTuple
 from django.conf import settings
-# from main.models import NRusheva
+from django.core.mail import EmailMultiAlternatives, get_connection
 import barcode
 from barcode.writer import ImageWriter
 from reportlab.pdfgen import canvas
@@ -15,6 +14,7 @@ from reportlab.lib import colors
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.lib.styles import ParagraphStyle
+
 
 
 def generate_barcode(reg_number):
@@ -68,45 +68,19 @@ def generate_pdf(list, contest_name, reg_number):
     c.save()
 
 
-# def test_pdf(id_obj):
-#     obj = NRusheva.objects.get(id=id_obj)
-#     reg_number = obj.reg_number
-#     parameters = (
-#         ('Конкурс', obj.name),
-#         ('Регистрационный №', obj.reg_number),
-#         ('Ф.И.О. участника', obj.fio),
-#         ('Возраст', obj.get_age_display()),
-#         ('Класс', obj.get_level_display()),
-#         ('Учебное зав.', obj.school),
-#         ('Округ', obj.teacher.get_district_display()),
-#         ('Тема работы', obj.get_theme_display()),
-#         ('Худ. материалы', obj.get_material_display()),
-#         ('Формат работы', obj.get_format_display()),
-#         ('Авторское название', obj.author_name),
-#         ('Аннотация', obj.description),
-#         ('Ф.И.О. педагога', obj.fio_teacher),
-#         ('Email педагога', obj.teacher.email)
-#     )
-#     generate_barcode(obj.reg_number)
-#     generate_pdf(parameters, obj.name, reg_number)
-# def test_pdf(id_obj):
-#     obj = NRusheva.objects.get(id=id_obj)
-#     reg_number = obj.reg_number
-#     parameters = (
-#         'Конкурс', obj.name,
-#         'Регистрационный №', obj.reg_number,
-#         'Ф.И.О. участника', obj.fio,
-#         'Возраст', obj.get_age_display(),
-#         'Класс', obj.get_level_display(),
-#         'Учебное зав.', obj.school,
-#         'Округ', obj.teacher.get_district_display(),
-#         'Тема работы', obj.get_theme_display(),
-#         'Худ. материалы', obj.get_material_display(),
-#         'Формат работы', obj.get_format_display(),
-#         'Авторское название', obj.author_name,
-#         'Аннотация', obj.description,
-#         'Ф.И.О. педагога', obj.fio_teacher,
-#         'Email педагога', obj.teacher.email
-#     )
-#     generate_barcode(obj.reg_number)
-#     generate_pdf(parameters, obj.name, reg_number)
+def send_mail_contest(secret, email,reg_number,message,name_contest):
+    connection = get_connection(host=settings.EMAIL_CONTEST['host'],
+                                port=settings.EMAIL_CONTEST['port'],
+                                username=secret['user'],
+                                password=secret['password'],
+                                use_tls=settings.EMAIL_CONTEST['use_tls'])
+    subject, from_email = name_contest, secret['user']
+    msg = EmailMultiAlternatives(subject,message, from_email, email, connection=connection)
+    msg.content_subtype = "html"
+    attached_file = os.path.join(settings.MEDIA_ROOT, 'pdf', f'{reg_number}.pdf')
+    msg.attach_file(attached_file, mimetype='text/html')
+    msg.send()
+    connection.close()
+
+
+

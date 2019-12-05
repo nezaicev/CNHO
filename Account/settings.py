@@ -129,11 +129,17 @@ BARCODE_MEDIA_ROOT = os.path.join(BASE_DIR, 'media/barcode/')
 FILE_UPLOAD_PERMISSIONS = 0o644
 FILE_UPLOAD_MAX_MEMORY_SIZE = 20621440
 
-
 # celery
 
-CELERY_BROKER_URL = 'redis://94.103.93.211:6379'
-CELERY_RESULT_BACKEND = 'redis://94.103.93.211:6379'
+CELERY_BROKER_URL = secret.celery_broker_url
+CELERY_RESULT_BACKEND = secret.celery_result_backend
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
+
+# email sending
+EMAIL_CONTEST = {
+    'host': 'smtp.gmail.com',
+    'port': 587,
+    'use_tls': True
+}

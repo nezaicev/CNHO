@@ -3,7 +3,9 @@ from django.db import models
 from main import lists,utils
 
 
+
 class Contest(models.Model):
+
     id = models.AutoField(primary_key=True)
     reg_number = models.CharField(max_length=15, blank=False, null=False)
     date_reg = models.DateTimeField(auto_now=True, blank=True)
@@ -76,9 +78,6 @@ class NRusheva(Contest):
             ('Email педагога', self.teacher.email)
         )
         return parameters
-
-
-
 
 
 class Mymoskvichi(Contest):
