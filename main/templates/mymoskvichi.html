@@ -47,7 +47,6 @@
             </div>
 
             <input type="hidden" name="teacher" value="{{ teacher.id }}" id="id_teacher">
-            <input type='hidden' name="fio_teacher" value="{{ teacher.fio }}" id="fio_teacher">
             <input type='hidden' name="region" value="{{ teacher.region }}" id="region">
             <input type='hidden' name="city" value="{{ teacher.city }}" id="city">
             <input type='hidden' name="district" value="{{ teacher.district }}" id="district">
@@ -65,11 +64,47 @@
                     {{ form.school }}
                 </div>
 
+
+
+                <template id="fio_teacher_block">
+                    <div class="input-group  mb-2">
+
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="">Ф.И.О. педагога</span>
+                        </div>
+
+                        <input class="form-control col-4" placeholder="Фамилия" name="tmp_fio_teacher" required>
+                        <input class="form-control col-4" placeholder="Имя" name="tmp_fio_teacher" required>
+                        <input class="form-control col-4" placeholder="Отчество" name="tmp_fio_teacher" required>
+
+                    </div>
+                </template>
+
+
+
+                <div id="main_fio_teacher_block">
+                    <input type='hidden' name="fio_teacher" value="{{ teacher.value }}" id="fio_teacher">
+                    <div class="input-group  mb-4">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text " id="">Педагог</span>
+                        </div>
+                        <input type="text" value="{{ teacher.fio }}" class="form-control col-6" id="tmp_fio_teacher">
+                    </div>
+
+                </div>
+
+                <div class="input-group  mb-3 mt-2">
+                    <button class="btn  btn-outline-success btn-sm"
+                            onclick="addBlockFio(document.getElementById('main_fio_teacher_block'),document.getElementById('fio_teacher_block').content.cloneNode(true))">
+                        Добавить участника
+                    </button>
+                </div>
+
             {% endif %}
 
             <div class="d-flex justify-content-end">
                 <button type="submit"
-                        onclick="setValueFIO('fio','tmp_fio');"
+                        onclick="setValueFIO('fio','tmp_fio');setValueFIO('fio_teacher','tmp_fio_teacher')"
                         class="btn btn-outline-primary mt-2 mb-4 ">
                     Далее
                 </button>
@@ -79,4 +114,4 @@
         </form>
     </div>
 {% endblock %}
-%}#}
+%}
