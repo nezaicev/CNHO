@@ -16,16 +16,17 @@ class BaseView(TemplateView):
         return render(request, self.template, context)
 
     def post(self, request, *args, **kwargs):
-        context = {'form': self.form, 'teacher_id': request.session.get('id')}
+        contest = request.session.get('contest')
+        context = {'form': self.form, 'teacher_id': request.session.get('id'), 'contest': contest}
         bound_form = self.form(request.POST, request.FILES)
         if bound_form.is_valid():
             new_obj = bound_form.save()
             messages.add_message(request, messages.SUCCESS, 'Ваши данные отправлены')
-            if request.session.get('contest') == 'nrusheva':
+            if contest == 'nrusheva':
                 nrusheva_tasks.delay(new_obj.id)
-            if request.session.get('contest') == 'artakiada':
+            if contest == 'artakiada':
                 artakiada_tasks.delay(new_obj.id)
-            if request.session.get('contest') == 'mymoskvichi':
+            if contest == 'mymoskvichi':
                 mymoskvici_tasks.delay(new_obj.id)
             return render(request, self.template, context)
 

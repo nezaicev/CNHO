@@ -1,10 +1,9 @@
 import time
 from django.db import models
-from main import lists,utils
+from main import lists, utils
 
 
 class Contest(models.Model):
-
     id = models.AutoField(primary_key=True)
     reg_number = models.CharField(max_length=15, blank=False, null=False)
     date_reg = models.DateTimeField(auto_now=True, blank=True)
@@ -20,8 +19,6 @@ class Contest(models.Model):
     def save(self, *args, **kwargs):
         self.reg_number = int(time.time())
         super(Contest, self).save(*args, **kwargs)
-
-
 
     class Meta:
         abstract = True
@@ -100,6 +97,9 @@ class NRusheva(Contest):
 
 
 class Mymoskvichi(Contest):
+    full_name = 'Московский городской конурс "Мы Москвичи"'
+    name = 'Конкурс "Мы Москвичи"'
+
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, null=True)
     theme = models.CharField(max_length=2, choices=lists.THEME, blank=False, verbose_name='Номинация')
     author_name = models.CharField(max_length=50, blank=False, verbose_name='Авторское название')

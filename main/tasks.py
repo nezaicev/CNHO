@@ -22,7 +22,7 @@ def artakiada_tasks(obj_id):
 @shared_task
 def mymoskvici_tasks(obj_id):
     obj = Mymoskvichi.objects.get(id=obj_id)
-    utils.send_mail_contest(secret.EMAIL_ARTAKIADA, obj.email, obj.reg_number, 'test', obj.name)
+    utils.send_mail_contest(secret.EMAIL_MYMOSKVICI, obj.email, obj.reg_number, 'test', obj.name)
 
 
 

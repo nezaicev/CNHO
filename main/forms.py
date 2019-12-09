@@ -48,7 +48,7 @@ class BaseContestForm(forms.ModelForm):
         widgets = {
             'fio': forms.HiddenInput(attrs={'name': 'fio', 'id': 'fio'}),
             'level': forms.Select(attrs={'class': 'custom-select'}, choices=lists.LEVEL),
-            'school': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Школа №123'}),
+            'school': forms.TextInput(attrs={'class': 'form-control col-6', 'placeholder': 'Школа №123'}),
             'district': forms.Select(attrs={'class': 'custom-select', 'type': 'hidden'}, choices=lists.DISTRICT),
             'city': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Населенный пункт',
                                            'type': 'hidden', 'required': '', 'value': 'г. Москва'}),
