@@ -19,6 +19,7 @@ class BaseView(TemplateView):
         contest = request.session.get('contest')
         context = {'form': self.form, 'teacher_id': request.session.get('id'), 'contest': contest}
         bound_form = self.form(request.POST, request.FILES)
+        print(bound_form.errors)
         if bound_form.is_valid():
             new_obj = bound_form.save()
             messages.add_message(request, messages.SUCCESS, 'Ваши данные отправлены')

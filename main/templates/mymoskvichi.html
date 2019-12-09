@@ -55,16 +55,6 @@
 
             {% if teacher.status == '1' %}
                 <input type='hidden' name="school" value="{{ teacher.school }}" id="school">
-            {% else %}
-
-                <div class="input-group  mb-4">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text " id="">{{ form.school.label }}</span>
-                    </div>
-                    {{ form.school }}
-                </div>
-
-
 
                 <template id="fio_teacher_block">
                     <div class="input-group  mb-2">
@@ -80,14 +70,13 @@
                     </div>
                 </template>
 
-
-
                 <div id="main_fio_teacher_block">
-                    <input type='hidden' name="fio_teacher" value="{{ teacher.value }}" id="fio_teacher">
+                    <input type='hidden' name="fio_teacher" value="{{ teacher.fio }}" id="fio_teacher">
                     <div class="input-group  mb-4">
                         <div class="input-group-prepend">
                             <span class="input-group-text " id="">Педагог</span>
                         </div>
+
                         <input type="text" value="{{ teacher.fio }}" class="form-control col-6" id="tmp_fio_teacher">
                     </div>
 
@@ -96,20 +85,34 @@
                 <div class="input-group  mb-3 mt-2">
                     <button class="btn  btn-outline-success btn-sm"
                             onclick="addBlockFio(document.getElementById('main_fio_teacher_block'),document.getElementById('fio_teacher_block').content.cloneNode(true))">
-                        Добавить участника
+                        Добавить педагога
+                    </button>
+                </div>
+                <div class="d-flex justify-content-end">
+                    <button type="submit"
+                            onclick="setValueFIO('fio','tmp_fio');setValueFIO('fio_teacher','tmp_fio_teacher')"
+                            class="btn btn-outline-primary mt-2 mb-4 ">
+                        Далее
+                    </button>
+                </div>
+
+            {% else %}
+
+                <div class="input-group  mb-4">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text " id="">{{ form.school.label }}</span>
+                    </div>
+                    {{ form.school }}
+                </div>
+                <div class="d-flex justify-content-end">
+                    <button type="submit"
+                            onclick="setValueFIO('fio','tmp_fio');"
+                            class="btn btn-outline-primary mt-2 mb-4 ">
+                        Далее
                     </button>
                 </div>
 
             {% endif %}
-
-            <div class="d-flex justify-content-end">
-                <button type="submit"
-                        onclick="setValueFIO('fio','tmp_fio');setValueFIO('fio_teacher','tmp_fio_teacher')"
-                        class="btn btn-outline-primary mt-2 mb-4 ">
-                    Далее
-                </button>
-            </div>
-
 
         </form>
     </div>

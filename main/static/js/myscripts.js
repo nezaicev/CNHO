@@ -29,7 +29,6 @@ function setValueElementById(id, value) {
 function setValueFIO(id, name) {
     let elements = document.getElementsByName(name);
     let value = '';
-    if (elements.childElementCount) {
         elements.forEach(function (item, i, arr) {
             if (item !== undefined) {
                 let str = item.value.trim();
@@ -43,10 +42,14 @@ function setValueFIO(id, name) {
             }
 
         });
-    }
     let el = document.getElementById(id);
-    console.log(el.value);
-    el.value += value;
+    if (el.value){
+        el.value+=',';
+        el.value += value;}
+    else {
+        el.value=value;
+    }
+
 
 }
 

@@ -25,13 +25,9 @@
                     <h5 class="name-contest">Конкурс им. Н. Рушевой</h5>
                 </div>
             </a>
-
-
         </div>
 
     </div>
-
-
 
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -47,7 +43,7 @@
                 <div class="modal-body">
                     <form action="" class="was-validated" method="post">
 
-                            {% csrf_token %}
+                        {% csrf_token %}
                         <div class="input-group input-group mb-4">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="inputGroup-sizing-sm">Email</span>
@@ -63,13 +59,8 @@
 
                         </div>
                         {{ form.info }}
-{#                        <input type="hidden" id="contest">#}
-
                         <div class="modal-footer">
-{#                            <a href="{% url 'status_url' 'nrusheva' %}">#}
-                                <button type="submit" class="btn btn-primary">Далее</button>
-{#                            </a>#}
-
+                            <button type="submit" class="btn btn-primary">Далее</button>
                         </div>
 
                     </form>
@@ -78,7 +69,5 @@
 
         </div>
     </div>
-
-
 
 {% endblock %}
