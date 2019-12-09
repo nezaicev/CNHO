@@ -5,15 +5,14 @@
     <div class=""><h3 class="text-center mt-4"> Дальнейшие действия</h3>
         {% if messages %}
             <ul class="messagelist">
-                {% for message in messages %}
-                    <li class="{{ message.tags }}">{{ message }}</li>
-                {% endfor %}
+            {% for message in messages %}
+            <li class="{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
             </ul>
         {% endif %}
-        <a href="{% url 'index' %}">Завершить регистрацию</a>
-        <a href="{% url 'contest_reg' %}"> Продолжить регистрацию других участников</a>
+    <a href="{% url 'index' %}">Завершить регистрацию</a>
 
-
+    <a href="{% url 'artakiada_form_registration_url' %}"> Продолжить регистрацию других участников</a>
     </div>
 
 {% endblock %}

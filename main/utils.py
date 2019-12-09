@@ -16,6 +16,7 @@ from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.lib.styles import ParagraphStyle
 
 
+
 def generate_barcode(reg_number):
     EAN = barcode.get_barcode_class('code128')
     data = list(filter(None, re.split('\D', reg_number)))
@@ -78,12 +79,9 @@ def send_mail_contest(secret, email,reg_number,message,name_contest):
     subject, from_email = name_contest, secret['user']
     msg = EmailMultiAlternatives(subject,message, from_email, list_emails, connection=connection)
     msg.content_subtype = "html"
-    try:
-        attached_file = os.path.join(settings.MEDIA_ROOT, 'pdf', f'{reg_number}.pdf')
-        msg.attach_file(attached_file, mimetype='text/html')
-        msg.send()
-    except:
-        msg.send()
+    attached_file = os.path.join(settings.MEDIA_ROOT, 'pdf', f'{reg_number}.pdf')
+    msg.attach_file(attached_file, mimetype='text/html')
+    msg.send()
     connection.close()
 
 

@@ -17,7 +17,6 @@ urlpatterns = [
 
     path('contest_reg/mymoskvichi', BaseView.as_view(template='finish_registration.html', form=MymoskviciContestForm),
          name='mymoskvichi_form_registration_url'),
-    path('contest_reg',BaseView.redirect_contest,name='contest_reg')
 
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
