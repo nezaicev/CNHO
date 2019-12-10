@@ -22,7 +22,8 @@ class BaseView(TemplateView):
         print(bound_form.errors)
         if bound_form.is_valid():
             new_obj = bound_form.save()
-            messages.add_message(request, messages.SUCCESS, 'Ваши данные отправлены')
+            messages.add_message(request, messages.SUCCESS,
+                                 'Данные сохранены, на Ваш email будет отправленно информационное письмо')
             if contest == 'nrusheva':
                 nrusheva_tasks.delay(new_obj.id)
             if contest == 'artakiada':
@@ -47,10 +48,6 @@ class BaseView(TemplateView):
             context = {'form': MymoskviciContestForm, 'teacher': teacher, 'email': request.session.get('email')}
             return render(request, 'mymoskvichi.html', context)
 
-    @classmethod
-    def finish(cls, request, *args, **kwargs):
-        return HttpResponse('ok')
-
 
 class Index(BaseView, View):
     template = 'index.html'
@@ -70,7 +67,6 @@ class Index(BaseView, View):
             request.session['id'] = Teacher.objects.get(email=request.session['email']).id
             return self.redirect_contest(request)
         except:
-            print(request.session.get('status'))
             context = {'status': request.POST['status'], 'email': request.session.get('email'),
                        'form': TeacherForm, 'contest': request.session.get('contest')}
             return render(request, 'teacher.html', context)

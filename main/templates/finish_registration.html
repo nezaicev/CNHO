@@ -2,18 +2,24 @@
 
 
 {% block content %}
-    <div class=""><h3 class="text-center mt-4"> Дальнейшие действия</h3>
-        {% if messages %}
-            <ul class="messagelist">
-                {% for message in messages %}
-                    <li class="{{ message.tags }}">{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-        <a href="{% url 'index' %}">Завершить регистрацию</a>
-        <a href="{% url 'contest_reg' %}"> Продолжить регистрацию других участников</a>
+    <div class="container">
+        <div class=""><h3 class="text-center mt-4 mb-5"> Завершение регистрации</h3>
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <div class="alert alert-success col-10 mb-5" role="alert">
+                            <p class="{{ message.tags }}">{{ message }}</p>
+                            <div class='row'><a href="{% url 'index' %}"><h6 class="ml-4 mr-5">Завершить регистрацию</h6></a>
+                                <a href="{% url 'contest_reg' %}"><h6>Продолжить регистрацию других участников</h6></a>
+                            </div>
+
+                        </div>
+
+                    {% endfor %}
+                </ul>
+            {% endif %}
 
 
+        </div>
     </div>
-
 {% endblock %}
