@@ -1,8 +1,5 @@
 {% extends 'base.html' %}
 
-
-
-
 {% block content %}
     <div class="d-flex justify-content-center mt-4 text-info ">
         <h2>Регистрация</h2>
@@ -18,7 +15,7 @@
 
             {{ form.fio }}
 
-            <div class="input-group  mb-2" id="fio_block">
+            <div class="input-group  mb-2" id="">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="">Ф.И.О. участника</span>
                 </div>
@@ -29,22 +26,50 @@
 
             </div>
 
+
             <div class="input-group  mb-3 mt-2">
                 <button class="btn  btn-outline-success btn-sm"
-                        onclick="addBlockFio(document.getElementById('main_fio_block'),document.getElementById('fio_block').cloneNode(true))">
+                        onclick="main_fio_block.appendChild(fio_block.content.cloneNode(true))">
                     Добавить участника
                 </button>
             </div>
+            <template id="fio_block">
+                <div class="input-group  mb-2" id="fio_sub_block">
 
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="">Ф.И.О. участника</span>
+                    </div>
+
+                    <input class="form-control col-4" placeholder="Фамилия" name="tmp_fio" required>
+                    <input class="form-control col-4" placeholder="Имя" name="tmp_fio" required>
+                    <input class="form-control col-4" placeholder="Отчество" name="tmp_fio" required>
+                    <button class='btn btn-sm btn-danger delete-button-block-fio'
+                            onclick="fio_sub_block.remove()">&#10006
+                    </button>
+
+                </div>
+            </template>
             <div id="main_fio_block">
             </div>
-            <div class="input-group  mb-4 mt-5" id="fio_block">
+
+
+
+
+
+            <div class="input-group  mr-4 mb-4 mt-5 " id="">
                 <div class="input-group-prepend">
-                    <span class="input-group-text" id="">Номинация и название</span>
+                    <span class="input-group-text" id="">Номинация</span>
                 </div>
                 {{ form.theme }}
+                {{ form.theme_extra }}
+            </div>
+            <div class="input-group  mb-4 ">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text " id="">Название</span>
+                        </div>
                 {{ form.author_name }}
             </div>
+
 
             <input type="hidden" name="teacher" value="{{ teacher.id }}" id="id_teacher">
             <input type='hidden' name="region" value="{{ teacher.region }}" id="region">
@@ -57,7 +82,7 @@
                 <input type='hidden' name="school" value="{{ teacher.school }}" id="school">
 
                 <template id="fio_teacher_block">
-                    <div class="input-group  mb-2">
+                    <div class="input-group  mb-2" id="fio_teacher_sub_block">
 
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="">Ф.И.О. педагога</span>
@@ -66,6 +91,9 @@
                         <input class="form-control col-4" placeholder="Фамилия" name="tmp_fio_teacher" required>
                         <input class="form-control col-4" placeholder="Имя" name="tmp_fio_teacher" required>
                         <input class="form-control col-4" placeholder="Отчество" name="tmp_fio_teacher" required>
+                        <button class='btn btn-sm btn-danger delete-button-block-fio'
+                                onclick="fio_teacher_sub_block.remove()">&#10006
+                        </button>
 
                     </div>
                 </template>
@@ -77,21 +105,21 @@
                             <span class="input-group-text " id="">Педагог</span>
                         </div>
 
-                        <input type="text" value="{{ teacher.fio }}" class="form-control col-6" id="tmp_fio_teacher">
+                        <input type="text" value="{{ teacher.fio }}" class="form-control col-5" id="tmp_fio_teacher">
                     </div>
 
                 </div>
 
                 <div class="input-group  mb-3 mt-2">
                     <button class="btn  btn-outline-success btn-sm"
-                            onclick="addBlockFio(document.getElementById('main_fio_teacher_block'),document.getElementById('fio_teacher_block').content.cloneNode(true))">
+                            onclick="main_fio_teacher_block.appendChild(fio_teacher_block.content.cloneNode(true))">
                         Добавить педагога
                     </button>
                 </div>
-                <div class="custom-control custom-checkbox mb-3">
+                <div class="custom-control custom-checkbox mb-3 mt-4">
                     <input type="checkbox" class="custom-control-input" id="customControlValidation1" required>
-                    <label class="custom-control-label" for="customControlValidation1">Я согласен с <a
-                            href="http://cnho.ru/?page_id=8232">условиями</a> конкурса</label>
+                    <label class="custom-control-label" for="customControlValidation1">Я согласен с
+                        <a target="_blank" href="http://cnho.ru/?page_id=8232">условиями</a> конкурса</label>
                     <div class="invalid-feedback">Необходимо Ваше согласие</div>
                 </div>
                 <div class="d-flex justify-content-end">
@@ -110,10 +138,11 @@
                     </div>
                     {{ form.school }}
                 </div>
-                <div class="custom-control custom-checkbox mb-3">
+                <input type='hidden' name="fio_teacher" value="{{ teacher.fio }}" id="fio_teacher">
+                <div class="custom-control custom-checkbox mb-3 mt-4">
                     <input type="checkbox" class="custom-control-input" id="customControlValidation1" required>
-                    <label class="custom-control-label" for="customControlValidation1">Я согласен с <a
-                            href="http://cnho.ru/?page_id=8232">условиями</a> конкурса</label>
+                    <label class="custom-control-label" for="customControlValidation1">Я согласен с
+                        <a target="_blank" href="http://cnho.ru/?page_id=8232">условиями</a> конкурса</label>
                     <div class="invalid-feedback">Необходимо Ваше согласие</div>
                 </div>
                 <div class="d-flex justify-content-end">

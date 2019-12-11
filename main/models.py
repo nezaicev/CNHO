@@ -101,5 +101,6 @@ class Mymoskvichi(Contest):
     name = 'Конкурс "Мы Москвичи"'
 
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, null=True)
-    theme = models.CharField(max_length=2, choices=lists.THEME, blank=False, verbose_name='Номинация')
+    theme = models.CharField(max_length=2, choices=lists.NOMINATIONS, blank=False, verbose_name='Номинация')
+    theme_extra = models.CharField(max_length=2, choices=lists.NOMINATIONS, blank=True, verbose_name='Доп. номинация')
     author_name = models.CharField(max_length=50, blank=False, verbose_name='Авторское название')

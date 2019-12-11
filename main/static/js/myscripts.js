@@ -52,15 +52,17 @@ function setValueFIO(id, name) {
 
 
 }
-
-function addBlockFio(parent, child) {
+function addButton(el){
     let button = document.createElement('button');
     button.innerHTML = '&#10006';
     button.className = 'btn btn-sm btn-danger delete-button-block-fio';
     button.addEventListener('click', function () {
-        child.remove()
+        el.remove()
     });
-    child.appendChild(button);
+    el.appendChild(button);
+}
+function addBlockFio(parent, child,) {
+    addButton(child);
     child.querySelectorAll('input').forEach(function (item, i) {
         item.value = '';
         if (item.lastChild) {

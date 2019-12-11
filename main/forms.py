@@ -44,7 +44,7 @@ class BaseContestForm(forms.ModelForm):
     class Meta:
         model = None
         fields = ['fio', 'region', 'city', 'district', 'school', 'level', 'teacher', 'email', 'fio_teacher', 'age',
-                  'gender', 'theme', 'material', 'author_name', 'format', 'description', 'image']
+                  'gender', 'theme','theme_extra', 'material', 'author_name', 'format', 'description', 'image']
         widgets = {
             'fio': forms.HiddenInput(attrs={'name': 'fio', 'id': 'fio'}),
             'level': forms.Select(attrs={'class': 'custom-select'}, choices=lists.LEVEL),
@@ -61,7 +61,8 @@ class BaseContestForm(forms.ModelForm):
             'gender': forms.Select(attrs={'class': 'custom-select'}),
             'age': forms.Select(attrs={'class': 'custom-select'}),
             'theme': forms.Select(attrs={'class': 'custom-select '}),
-            'author_name': forms.TextInput(attrs={'class': 'form-control ', 'placeholder': 'Авторское название'}),
+            'theme_extra': forms.Select(attrs={'class': 'custom-select '}),
+            'author_name': forms.TextInput(attrs={'class': 'form-control col-5', 'placeholder': 'Авторское название'}),
             'material': forms.Select(attrs={'class': 'form-control ', 'placeholder': 'Материал (Гуашь)'}),
             'format': forms.Select(attrs={'class': 'custom-select '}),
             'description': forms.Textarea(attrs={'class': 'form-control ', 'rows': '3',
@@ -73,15 +74,19 @@ class BaseContestForm(forms.ModelForm):
 class ArtakiadaContestForm(BaseContestForm):
     class Meta(BaseContestForm.Meta):
         model = Artakiada
-        exclude = ('image', 'material', 'age', 'description', 'author_name', 'gender', 'theme', 'format')
+        exclude = ('image', 'material', 'age', 'description', 'author_name', 'gender', 'theme','theme_extra', 'format')
 
 
 class NRushevaContestForm(BaseContestForm):
     class Meta(BaseContestForm.Meta):
         model = NRusheva
+        exclude = ('theme_extra',)
 
 
 class MymoskviciContestForm(BaseContestForm):
     class Meta(BaseContestForm.Meta):
         model = Mymoskvichi
         exclude = ('image', 'material', 'age', 'description', 'gender', 'format', 'level')
+
+
+
