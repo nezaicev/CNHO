@@ -13,7 +13,6 @@
 
             <span class="badge badge-pill badge-info mb-3 mt-2">Данные участника:</span>
 
-
             <div class="input-group  mb-4">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="">Ф.И.О. участника</span>
@@ -31,14 +30,12 @@
                 {{ form.level }}
             </div>
 
-
             <input type="hidden" name="teacher" value="{{ teacher.id }}" id="id_teacher">
             <input type='hidden' name="fio_teacher" value="{{ teacher.fio }}" id="fio_teacher">
             <input type='hidden' name="region" value="{{ teacher.region }}" id="region">
             <input type='hidden' name="city" value="{{ teacher.city }}" id="city">
             <input type='hidden' name="district" value="{{ teacher.district }}" id="district">
             <input type='hidden' name="email" value="{{ teacher.email }}" id="email">
-
 
             {% if teacher.status == '1' %}
                 <input type='hidden' name="school" value="{{ teacher.school }}" id="school">
@@ -52,6 +49,12 @@
                 </div>
 
             {% endif %}
+            <div class="custom-control custom-checkbox mb-3">
+                <input type="checkbox" class="custom-control-input" id="customControlValidation1" required>
+                <label class="custom-control-label" for="customControlValidation1">Я согласен с
+                    <a target="_blank"href="http://cnho.ru/?page_id=8255">условиями</a> конкурса</label>
+                <div class="invalid-feedback">Необходимо Ваше согласие</div>
+            </div>
 
             <div class="d-flex justify-content-end">
                 <button type="submit"
@@ -60,8 +63,6 @@
                     Далее
                 </button>
             </div>
-
-
 
         </form>
     </div>

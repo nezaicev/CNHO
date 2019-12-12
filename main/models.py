@@ -9,8 +9,8 @@ class Contest(models.Model):
     reg_number = models.CharField(max_length=15, blank=False, null=False)
     date_reg = models.DateTimeField(auto_now=True, blank=True)
     school = models.CharField('Образовательная организация', max_length=150, blank=False)
-    fio = models.CharField('ФИО участника', max_length=500, blank=False)
-    fio_teacher = models.CharField('ФИО Педагога', max_length=500, blank=False)
+    fio = models.CharField('ФИО участника', max_length=700, blank=False)
+    fio_teacher = models.CharField('ФИО Педагога', max_length=700, blank=False)
     email = models.EmailField('email', blank=False)
     status = models.CharField(max_length=2, choices=lists.STATUS, blank=True, verbose_name='Статус участника')
     region = models.CharField('Регион', max_length=101, blank=True)
@@ -101,5 +101,6 @@ class NRusheva(Contest):
 
 class Mymoskvichi(Contest):
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, null=True)
-    theme = models.CharField(max_length=2, choices=lists.THEME, blank=False, verbose_name='Номинация')
+    theme = models.CharField(max_length=2, choices=lists.NOMINATIONS, blank=False, verbose_name='Номинация')
+    theme_extra = models.CharField(max_length=2, choices=lists.NOMINATIONS, blank=True, verbose_name='Доп. номинация')
     author_name = models.CharField(max_length=50, blank=False, verbose_name='Авторское название')

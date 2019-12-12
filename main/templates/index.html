@@ -1,37 +1,51 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-    <div class="container d-flex justify-content-between mt-4 ">
+    <div class="container mt-4 ">
         <div class="row">
-
             <a href="#">
-                <div class="mr-5" onclick="let el=document.getElementById('contest'); el.value='artakiada'"
+                <div class="col-md-6 mb-4 col-lg-4"
+                     onclick="let el=document.getElementById('contest'); el.value='artakiada'"
                      data-toggle="modal" data-target="#exampleModal">
-                    <img alt="Мы Москвичи" src="{% static '/img/artakiada.png' %} " class="mb-3">
-                    <h5 class="name-contest">АРТакиада</h5>
+                    <div class="service-29193 text-center">
+                            <span class="img-wrap mb-5">
+                            <img src="{% static '/img/artakiada.png' %} " alt="Image" class="img-fluid mb-4">
+                            </span>
+                        <h5 class="mb-4"><a href="#">АРТакиада "Изображение и слово"</a></h5>
+                        <p>Очный творческий конкурс юных иллюстраторов. Связь литературы и искусства</p>
+                    </div>
                 </div>
             </a>
             <a href="#">
-                <div class="mr-5 ml-5" onclick="let el=document.getElementById('contest'); el.value='mymoskvichi'"
+                <div class="col-md-6 mb-4 col-lg-4 "
+                     onclick="let el=document.getElementById('contest'); el.value='mymoskvichi'"
                      data-toggle="modal" data-target="#exampleModal">
-                    <img alt="Мы Москвичи" src="{% static '/img/mymoskvichi_300.jpg' %} " class="mb-3">
-                    <h5 class="name-contest">Мы Москвичи</h5>
+                    <div class="service-29193 text-center">
+                            <span class="img-wrap mb-5">
+                            <img src="{% static '/img/mymoskvichi_300.jpg' %}" alt="Image" class="img-fluid mb-3 mt-4">
+                            </span>
+                        <h5 class="mb-4"><a href="#">Конкурс мультимедия<br>"Мы Москвичи"</a></h5>
+                        <p>Овладение цифровыми технологиями в художественном творчестве</p>
+                    </div>
                 </div>
             </a>
             <a href="#">
-                <div class="ml-5" onclick="let el=document.getElementById('contest'); el.value='nrusheva'"
+                <div class="col-md-6 mb-4 col-lg-4"
+                     onclick="let el=document.getElementById('contest'); el.value='nrusheva'"
                      data-toggle="modal" data-target="#exampleModal">
-                    <img alt="Конкурс им. Нади Рушевой" src="{% static '/img/nrusheva_200.jpg' %} " class="mb-3">
-                    <h5 class="name-contest">Конкурс им. Н. Рушевой</h5>
+                    <div class="service-29193 text-center">
+                            <span class="img-wrap mb-5">
+                            <img src="{% static '/img/nrusheva_200.jpg' %}" alt="Image" class="img-fluid mb-3">
+                            </span>
+                        <h5 class="mb-4"><a href="#">Московский конкурс детского рисунка им. Нади Рушевой</a></h5>
+                        <p>Посвящается художественному отражению юбилейных и граждански значимых событий года</p>
+                    </div>
                 </div>
+
             </a>
-
-
         </div>
 
     </div>
-
-
 
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -47,7 +61,7 @@
                 <div class="modal-body">
                     <form action="" class="was-validated" method="post">
 
-                            {% csrf_token %}
+                        {% csrf_token %}
                         <div class="input-group input-group mb-4">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="inputGroup-sizing-sm">Email</span>
@@ -62,14 +76,10 @@
                             {{ form.status }}
 
                         </div>
+                         <!-- contest -->
                         {{ form.info }}
-{#                        <input type="hidden" id="contest">#}
-
                         <div class="modal-footer">
-{#                            <a href="{% url 'status_url' 'nrusheva' %}">#}
-                                <button type="submit" class="btn btn-primary">Далее</button>
-{#                            </a>#}
-
+                            <button type="submit" class="btn btn-primary">Далее</button>
                         </div>
 
                     </form>
@@ -78,7 +88,5 @@
 
         </div>
     </div>
-
-
 
 {% endblock %}

@@ -2,6 +2,7 @@ import re
 import os
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives, get_connection
+from django.template.loader import render_to_string
 import barcode
 from barcode.writer import ImageWriter
 from reportlab.pdfgen import canvas
@@ -68,7 +69,7 @@ def generate_pdf(list, contest_name, reg_number):
     c.save()
 
 
-def send_mail_contest(secret, email,reg_number,message,name_contest):
+def send_mail_contest(secret, email,reg_number,message_template,name_contest):
     list_emails=[]
     list_emails.append(email)
     connection = get_connection(host=settings.EMAIL_CONTEST['host'],
@@ -77,6 +78,7 @@ def send_mail_contest(secret, email,reg_number,message,name_contest):
                                 password=secret['password'],
                                 use_tls=settings.EMAIL_CONTEST['use_tls'])
     subject, from_email = name_contest, secret['user']
+    message=render_to_string(message_template,{'reg_number':reg_number})
     msg = EmailMultiAlternatives(subject,message, from_email, list_emails, connection=connection)
     msg.content_subtype = "html"
     attached_file = os.path.join(settings.MEDIA_ROOT, 'pdf', f'{reg_number}.pdf')

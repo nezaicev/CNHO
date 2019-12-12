@@ -29,7 +29,6 @@ function setValueElementById(id, value) {
 function setValueFIO(id, name) {
     let elements = document.getElementsByName(name);
     let value = '';
-    if (elements.childElementCount) {
         elements.forEach(function (item, i, arr) {
             if (item !== undefined) {
                 let str = item.value.trim();
@@ -43,21 +42,27 @@ function setValueFIO(id, name) {
             }
 
         });
-    }
     let el = document.getElementById(id);
-    console.log(el.value);
-    el.value += value;
+    if (el.value){
+        el.value+=',';
+        el.value += value;}
+    else {
+        el.value=value;
+    }
+
 
 }
-
-function addBlockFio(parent, child) {
+function addButton(el){
     let button = document.createElement('button');
     button.innerHTML = '&#10006';
     button.className = 'btn btn-sm btn-danger delete-button-block-fio';
     button.addEventListener('click', function () {
-        child.remove()
+        el.remove()
     });
-    child.appendChild(button);
+    el.appendChild(button);
+}
+function addBlockFio(parent, child,) {
+    addButton(child);
     child.querySelectorAll('input').forEach(function (item, i) {
         item.value = '';
         if (item.lastChild) {
