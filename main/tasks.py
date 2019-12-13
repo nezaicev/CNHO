@@ -28,7 +28,6 @@ def artakiada_tasks(obj_id):
 def mymoskvici_tasks(obj_id):
     message_template='letters/mymoskvichi_letters.html'
     obj = Mymoskvichi.objects.get(id=obj_id)
-    utils.send_mail_contest(secret.EMAIL_ARTAKIADA, obj.email, obj.reg_number, 'test', obj.name)
     if obj:
         utils.send_mail_contest(secret.EMAIL_MYMOSKVICI, obj.email, obj.reg_number, message_template, obj.name)
 

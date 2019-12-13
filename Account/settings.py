@@ -138,8 +138,14 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
 
 # email sending
+# EMAIL_CONTEST = {
+#     'host': 'smtp.gmail.com',
+#     'port': 587,
+#     'use_tls': True
+# }
 EMAIL_CONTEST = {
-    'host': 'smtp.gmail.com',
+    'host': 'email-smtp.eu-west-1.amazonaws.com',
+    'from_contest':'konkurs@cnho.shkola-nemenskogo.ru',
     'port': 587,
     'use_tls': True
 }

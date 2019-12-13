@@ -21,9 +21,7 @@ class BaseView(TemplateView):
         print(bound_form.errors)
         if bound_form.is_valid():
             new_obj = bound_form.save()
-            messages.add_message(request, messages.SUCCESS, 'Ваши данные отправлены')
-            if request.session.get('contest') == 'nrusheva': messages.add_message(request, messages.SUCCESS,
-                                 'Данные сохранены, на Ваш email будет отправленно информационное письмо')
+            messages.add_message(request, messages.SUCCESS, 'Данные сохранены, на Ваш email будет отправленно информационное письмо')
             if request.session.get('contest') == 'nrusheva':
                 nrusheva_tasks.delay(new_obj.id)
             if request.session.get('contest') == 'artakiada':

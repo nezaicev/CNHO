@@ -4,15 +4,18 @@ from main.models import Artakiada,NRusheva,Mymoskvichi
 # Register your models here.
 
 class ArtakiadaAdmin(admin.ModelAdmin):
-    pass
+    search_fields = ('reg_number','email','fio')
+    list_display = ('reg_number', 'fio', 'school', 'teacher','status')
+    list_editable = ('status',)
 
 
 class NRushevaAdmin(admin.ModelAdmin):
-    pass
+    search_fields = ('reg_number', 'email', 'fio')
+
 
 
 class MymoskvichiAdmin(admin.ModelAdmin):
-    pass
+    search_fields = ('reg_number', 'email', 'fio')
 
 
 admin.site.register(Artakiada, ArtakiadaAdmin)

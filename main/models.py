@@ -18,10 +18,9 @@ class Contest(models.Model):
     district = models.CharField('Округ', max_length=101, blank=True)
 
     def save(self, *args, **kwargs):
-        self.reg_number = int(time.time())
+        if not self.pk:
+            self.reg_number = int(time.time())
         super(Contest, self).save(*args, **kwargs)
-
-
 
     class Meta:
         abstract = True
@@ -40,13 +39,18 @@ class Teacher(models.Model):
     status = models.CharField('Статус', max_length=10, choices=lists.REG_STATUS, blank=False)
     info = models.CharField(max_length=100, blank=True)
 
+    def __str__(self):
+        return self.email
+
 
 class Artakiada(Contest):
     full_name = 'АРТакиада "Изображение и слово"'
     name = 'АРТакиада "Изображение и слово"'
-
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, null=True)
     level = models.CharField(max_length=2, choices=lists.LEVEL, blank=False, verbose_name='Класс')
+
+    def __str__(self):
+        return str(self.reg_number)
 
     def get_parm_for_pdf(self):
         parameters = (
@@ -67,7 +71,6 @@ class Artakiada(Contest):
 class NRusheva(Contest):
     full_name = 'Московский городской конкурс детского рисунка имени Нади Рушевой'
     name = 'Конкурс им. Нади Рушевой'
-
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, null=True)
     level = models.CharField(max_length=2, choices=lists.LEVEL, blank=False, verbose_name='Класс')
     age = models.CharField(max_length=2, choices=lists.AGE, blank=False, verbose_name='Возраст')
@@ -78,6 +81,9 @@ class NRusheva(Contest):
     format = models.CharField(max_length=2, choices=lists.FORMAT, blank=False, verbose_name='Формат работы')
     description = models.TextField(max_length=500, blank=False, verbose_name='Аннотация')
     image = models.ImageField(upload_to='images/', null=True, blank=False)
+
+    def __str__(self):
+        return str(self.reg_number)
 
     def get_parm_for_pdf(self):
         parameters = (
@@ -100,7 +106,12 @@ class NRusheva(Contest):
 
 
 class Mymoskvichi(Contest):
+    full_name = 'Конкурс мультимедиа "Мы Москвичи"'
+    name = 'Конкурс мультимедиа "Мы Москвичи"'
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, null=True)
     theme = models.CharField(max_length=2, choices=lists.NOMINATIONS, blank=False, verbose_name='Номинация')
     theme_extra = models.CharField(max_length=2, choices=lists.NOMINATIONS, blank=True, verbose_name='Доп. номинация')
     author_name = models.CharField(max_length=50, blank=False, verbose_name='Авторское название')
+
+    def __str__(self):
+        return str(self.reg_number)

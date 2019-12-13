@@ -50,7 +50,7 @@ def generate_pdf(list, contest_name, reg_number):
     normal_style = styles['Yandex']
     bold_style = styles['Yandex']
 
-    data = [[Paragraph(list[i][0], normal_style), Paragraph(list[i][1], normal_style)] for i in range(0, len(list) - 1)]
+    data = [[Paragraph(list[i][0], normal_style), Paragraph(list[i][1], normal_style)] for i in range(0, len(list))]
 
     table = Table(data, colWidths=[4 * cm, 14 * cm])
 
@@ -77,13 +77,16 @@ def send_mail_contest(secret, email,reg_number,message_template,name_contest):
                                 username=secret['user'],
                                 password=secret['password'],
                                 use_tls=settings.EMAIL_CONTEST['use_tls'])
-    subject, from_email = name_contest, secret['user']
+    subject, from_email = name_contest, settings.EMAIL_CONTEST['from_contest']
     message=render_to_string(message_template,{'reg_number':reg_number})
     msg = EmailMultiAlternatives(subject,message, from_email, list_emails, connection=connection)
     msg.content_subtype = "html"
-    attached_file = os.path.join(settings.MEDIA_ROOT, 'pdf', f'{reg_number}.pdf')
-    msg.attach_file(attached_file, mimetype='text/html')
-    msg.send()
+    try:
+        attached_file = os.path.join(settings.MEDIA_ROOT, 'pdf', f'{reg_number}.pdf')
+        msg.attach_file(attached_file, mimetype='text/html')
+        msg.send()
+    except:
+        msg.send()
     connection.close()
 
 
