@@ -4,8 +4,8 @@ from main.models import Artakiada,NRusheva,Mymoskvichi
 # Register your models here.
 
 class ArtakiadaAdmin(admin.ModelAdmin):
-    search_fields = ('reg_number','email','fio')
-    list_display = ('reg_number', 'fio', 'school', 'teacher','status')
+    search_fields = ('reg_number','email','fio','fio_teacher')
+    list_display = ('reg_number','status', 'fio',  'school', 'region','district','fio_teacher','teacher',)
     list_editable = ('status',)
 
 

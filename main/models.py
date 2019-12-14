@@ -13,9 +13,9 @@ class Contest(models.Model):
     fio_teacher = models.CharField('ФИО Педагога', max_length=700, blank=False)
     email = models.EmailField('email', blank=False)
     status = models.CharField(max_length=2, choices=lists.STATUS, blank=True, verbose_name='Статус участника')
-    region = models.CharField('Регион', max_length=101, blank=True)
+    region = models.CharField('Регион',choices=lists.REGIONS, max_length=101, blank=True)
     city = models.CharField('Город', max_length=101, blank=True)
-    district = models.CharField('Округ', max_length=101, blank=True)
+    district = models.CharField('Округ', choices=lists.DISTRICT,max_length=101, blank=True)
 
     def save(self, *args, **kwargs):
         if not self.pk:
@@ -52,6 +52,10 @@ class Artakiada(Contest):
     def __str__(self):
         return str(self.reg_number)
 
+    class Meta:
+        verbose_name = 'Участник АРТакиады'
+        verbose_name_plural = 'Участники АРТакиады'
+
     def get_parm_for_pdf(self):
         parameters = (
             ('Конкурс', self.name),
@@ -85,6 +89,10 @@ class NRusheva(Contest):
     def __str__(self):
         return str(self.reg_number)
 
+    class Meta:
+        verbose_name = 'Участник кон. им. Нади Рушевой'
+        verbose_name_plural = 'Участники кон. им. Нади Рушевой'
+
     def get_parm_for_pdf(self):
         parameters = (
             ('Конкурс', self.name),
@@ -115,3 +123,7 @@ class Mymoskvichi(Contest):
 
     def __str__(self):
         return str(self.reg_number)
+
+    class Meta:
+        verbose_name = 'Участник кон. "Мы Москвичи"'
+        verbose_name_plural = 'Участники кон. "Мы Москвичи"'
