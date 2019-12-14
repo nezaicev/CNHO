@@ -1,10 +1,9 @@
 import time
 from django.db import models
-from main import lists,utils
+from main import lists, utils
 
 
 class Contest(models.Model):
-
     id = models.AutoField(primary_key=True)
     reg_number = models.CharField(max_length=15, blank=False, null=False)
     date_reg = models.DateTimeField(auto_now=True, blank=True)
@@ -13,9 +12,9 @@ class Contest(models.Model):
     fio_teacher = models.CharField('ФИО Педагога', max_length=700, blank=False)
     email = models.EmailField('email', blank=False)
     status = models.CharField(max_length=2, choices=lists.STATUS, blank=True, verbose_name='Статус участника')
-    region = models.CharField('Регион',choices=lists.REGIONS, max_length=101, blank=True)
+    region = models.CharField('Регион', choices=lists.REGIONS, max_length=101, blank=True)
     city = models.CharField('Город', max_length=101, blank=True)
-    district = models.CharField('Округ', choices=lists.DISTRICT,max_length=101, blank=True)
+    district = models.CharField('Округ', choices=lists.DISTRICT, max_length=101, blank=True)
 
     def save(self, *args, **kwargs):
         if not self.pk:
@@ -46,6 +45,7 @@ class Teacher(models.Model):
 class Artakiada(Contest):
     full_name = 'АРТакиада "Изображение и слово"'
     name = 'АРТакиада "Изображение и слово"'
+    alias = 'artakiada'
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, null=True)
     level = models.CharField(max_length=2, choices=lists.LEVEL, blank=False, verbose_name='Класс')
 
@@ -75,6 +75,7 @@ class Artakiada(Contest):
 class NRusheva(Contest):
     full_name = 'Московский городской конкурс детского рисунка имени Нади Рушевой'
     name = 'Конкурс им. Нади Рушевой'
+    alias = 'nrusheva'
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, null=True)
     level = models.CharField(max_length=2, choices=lists.LEVEL, blank=False, verbose_name='Класс')
     age = models.CharField(max_length=2, choices=lists.AGE, blank=False, verbose_name='Возраст')
@@ -116,6 +117,7 @@ class NRusheva(Contest):
 class Mymoskvichi(Contest):
     full_name = 'Конкурс мультимедиа "Мы Москвичи"'
     name = 'Конкурс мультимедиа "Мы Москвичи"'
+    alias = 'mymoskvichi'
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, null=True)
     theme = models.CharField(max_length=2, choices=lists.NOMINATIONS, blank=False, verbose_name='Номинация')
     theme_extra = models.CharField(max_length=2, choices=lists.NOMINATIONS, blank=True, verbose_name='Доп. номинация')

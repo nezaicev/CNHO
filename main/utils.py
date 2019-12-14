@@ -36,7 +36,7 @@ def generate_barcode(reg_number):
     }, text=None)
 
 
-def generate_pdf(list, contest_name, reg_number):
+def generate_pdf(list, contest_name,alias, reg_number):
     width, height = A4
     styles = getSampleStyleSheet()
     styles.add(ParagraphStyle(name='Yandex', alignment=TA_JUSTIFY, fontName='Yandex', fontSize=12))
@@ -59,7 +59,7 @@ def generate_pdf(list, contest_name, reg_number):
         ('BOX', (0, 0), (-1, -1), 0.25, colors.black),
     ]))
 
-    c = canvas.Canvas(os.path.join(settings.MEDIA_ROOT, 'pdf',f'{reg_number}.pdf'), pagesize=A4)
+    c = canvas.Canvas(os.path.join(settings.MEDIA_ROOT, 'pdf',alias,f'{reg_number}.pdf'), pagesize=A4)
     c.setFont('Yandex', 20)
     c.drawString(20, 810, contest_name)
     c.drawImage(os.path.join(settings.BARCODE_MEDIA_ROOT, f'{reg_number}.png'), 340, 715)
@@ -69,7 +69,7 @@ def generate_pdf(list, contest_name, reg_number):
     c.save()
 
 
-def send_mail_contest(secret, email,reg_number,message_template,name_contest):
+def send_mail_contest(secret, email,reg_number,message_template,name_contest,alias):
     list_emails=[]
     list_emails.append(email)
     connection = get_connection(host=settings.EMAIL_CONTEST['host'],
@@ -82,7 +82,7 @@ def send_mail_contest(secret, email,reg_number,message_template,name_contest):
     msg = EmailMultiAlternatives(subject,message, from_email, list_emails, connection=connection)
     msg.content_subtype = "html"
     try:
-        attached_file = os.path.join(settings.MEDIA_ROOT, 'pdf', f'{reg_number}.pdf')
+        attached_file = os.path.join(settings.MEDIA_ROOT, 'pdf', alias,f'{reg_number}.pdf')
         msg.attach_file(attached_file, mimetype='text/html')
         msg.send()
     except:
