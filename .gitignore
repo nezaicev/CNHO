@@ -1,5 +1,5 @@
 venv/
 secret.py
 .idea/
-__pycache__/
+.Account/__pycache__/
 
