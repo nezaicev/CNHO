@@ -26,3 +26,4 @@ class TeacherAdmin(admin.ModelAdmin):
 admin.site.register(Artakiada, ArtakiadaAdmin)
 admin.site.register(NRusheva,NRushevaAdmin)
 admin.site.register(Mymoskvichi,MymoskvichiAdmin)
+admin.site.register(Teacher,TeacherAdmin)
