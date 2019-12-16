@@ -1,7 +1,8 @@
 from django.contrib import admin
-from main.models import Artakiada,NRusheva,Mymoskvichi
+from main.models import Artakiada,NRusheva,Mymoskvichi,Teacher
 
 # Register your models here.
+
 
 class ArtakiadaAdmin(admin.ModelAdmin):
     search_fields = ('reg_number','email','fio','fio_teacher')
@@ -13,9 +14,13 @@ class NRushevaAdmin(admin.ModelAdmin):
     search_fields = ('reg_number', 'email', 'fio')
 
 
-
 class MymoskvichiAdmin(admin.ModelAdmin):
     search_fields = ('reg_number', 'email', 'fio')
+
+
+class TeacherAdmin(admin.ModelAdmin):
+    search_fields = ('email','fio',)
+    list_display = ('fio', 'school', 'email','region', 'district','status',)
 
 
 admin.site.register(Artakiada, ArtakiadaAdmin)
