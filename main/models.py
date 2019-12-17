@@ -15,6 +15,7 @@ class Contest(models.Model):
     region = models.CharField('Регион', choices=lists.REGIONS, max_length=101, blank=True)
     city = models.CharField('Город', max_length=101, blank=True)
     district = models.CharField('Округ', choices=lists.DISTRICT, max_length=101, blank=True)
+    year_contest = models.TextField('Год проведения',default=utils.generate_year())
 
     def save(self, *args, **kwargs):
         if not self.pk:
@@ -40,6 +41,7 @@ class Teacher(models.Model):
 
     def __str__(self):
         return self.email
+
     class Meta:
         verbose_name = 'Педагог'
         verbose_name_plural = 'Педагоги'
@@ -140,8 +142,8 @@ class Mymoskvichi(Contest):
             ('Округ', self.teacher.get_district_display()),
             ('Ф.И.О. педагога/ов', self.fio_teacher),
             ('Email педагога', self.teacher.email),
-            ('Номинация №1',self.get_theme_display()),
-            ('Номинация №2',self.get_theme_extra_display()),
+            ('Номинация №1', self.get_theme_display()),
+            ('Номинация №2', self.get_theme_extra_display()),
             ('Авторское название', self.author_name),
         )
         return parameters
