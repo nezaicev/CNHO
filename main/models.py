@@ -40,6 +40,9 @@ class Teacher(models.Model):
 
     def __str__(self):
         return self.email
+    class Meta:
+        verbose_name = 'Педагог'
+        verbose_name_plural = 'Педагоги'
 
 
 class Artakiada(Contest):
