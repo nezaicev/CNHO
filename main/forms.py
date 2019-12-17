@@ -31,7 +31,7 @@ class TeacherForm(forms.ModelForm):
             'city': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Населенный пункт',
                                            'type': 'hidden', 'required': '', 'value': 'г. Москва'}),
             'district': forms.Select(attrs={'class': 'custom-select', 'type': 'hidden'}, choices=lists.DISTRICT),
-            'school': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Школа №123', 'required':''}),
+            'school': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Школа №123', 'required': ''}),
             'position': forms.Select(attrs={'class': 'custom-select '}, choices=lists.POSITIONS),
             'age': forms.Select(attrs={'class': 'custom-select'}, choices=lists.AGE_TEACHER),
             'phone': forms.TextInput(attrs={'class': 'form-control col-4'}),
@@ -44,7 +44,7 @@ class BaseContestForm(forms.ModelForm):
     class Meta:
         model = None
         fields = ['fio', 'region', 'city', 'district', 'school', 'level', 'teacher', 'email', 'fio_teacher', 'age',
-                  'gender', 'theme','theme_extra', 'material', 'author_name', 'format', 'description', 'image']
+                  'gender', 'theme', 'theme_extra', 'material', 'author_name', 'format', 'description', 'image','program']
         widgets = {
             'fio': forms.HiddenInput(attrs={'name': 'fio', 'id': 'fio'}),
             'level': forms.Select(attrs={'class': 'custom-select'}, choices=lists.LEVEL),
@@ -67,6 +67,7 @@ class BaseContestForm(forms.ModelForm):
             'format': forms.Select(attrs={'class': 'custom-select '}),
             'description': forms.Textarea(attrs={'class': 'form-control ', 'rows': '3',
                                                  'placeholder': 'Краткая, сжатая, характеристика содержания работы'}),
+            'program': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Adobe Flash'}),
 
         }
 
@@ -74,19 +75,17 @@ class BaseContestForm(forms.ModelForm):
 class ArtakiadaContestForm(BaseContestForm):
     class Meta(BaseContestForm.Meta):
         model = Artakiada
-        exclude = ('image', 'material', 'age', 'description', 'author_name', 'gender', 'theme','theme_extra', 'format')
+        exclude = (
+        'image', 'material', 'age', 'description', 'author_name', 'gender', 'theme', 'theme_extra', 'format', 'program')
 
 
 class NRushevaContestForm(BaseContestForm):
     class Meta(BaseContestForm.Meta):
         model = NRusheva
-        exclude = ('theme_extra',)
+        exclude = ('theme_extra','program')
 
 
 class MymoskviciContestForm(BaseContestForm):
     class Meta(BaseContestForm.Meta):
         model = Mymoskvichi
-        exclude = ('image', 'material', 'age', 'description', 'gender', 'format', 'level')
-
-
-
+        exclude = ('image', 'material', 'description', 'gender', 'format', 'level')

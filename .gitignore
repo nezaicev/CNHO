@@ -1,8 +1,10 @@
 venv/
 secret.py
 .idea/
-Account/__pycache__/
-main/__pycache__/
 main/migrations/
+Account/__pycache__/
+Account/main/migrations
+main/__pycache__/
 __pycache__/
 **/__pycache__
+media/

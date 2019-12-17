@@ -15,7 +15,7 @@ class Contest(models.Model):
     region = models.CharField('Регион', choices=lists.REGIONS, max_length=101, blank=True)
     city = models.CharField('Город', max_length=101, blank=True)
     district = models.CharField('Округ', choices=lists.DISTRICT, max_length=101, blank=True)
-    year_contest = models.TextField('Год проведения',default=utils.generate_year())
+    year_contest = models.TextField('Год проведения', default=utils.generate_year())
 
     def save(self, *args, **kwargs):
         if not self.pk:
@@ -64,6 +64,7 @@ class Artakiada(Contest):
     def get_parm_for_pdf(self):
         parameters = (
             ('Конкурс', self.name),
+            ('Год проведения', self.year_contest),
             ('Регистрационный №', self.reg_number),
             ('Ф.И.О. участника', self.fio),
             ('Учебное зав.', self.school),
@@ -102,6 +103,7 @@ class NRusheva(Contest):
     def get_parm_for_pdf(self):
         parameters = (
             ('Конкурс', self.name),
+            ('Год проведения', self.year_contest),
             ('Регистрационный №', self.reg_number),
             ('Ф.И.О. участника', self.fio),
             ('Возраст', self.get_age_display()),
@@ -114,7 +116,8 @@ class NRusheva(Contest):
             ('Авторское название', self.author_name),
             ('Аннотация', self.description),
             ('Ф.И.О. педагога', self.fio_teacher),
-            ('Email педагога', self.teacher.email)
+            ('Email педагога', self.teacher.email),
+            ('Телефон', self.teacher.phone),
         )
         return parameters
 
@@ -127,6 +130,8 @@ class Mymoskvichi(Contest):
     theme = models.CharField(max_length=2, choices=lists.NOMINATIONS, blank=False, verbose_name='Номинация')
     theme_extra = models.CharField(max_length=2, choices=lists.NOMINATIONS, blank=True, verbose_name='Доп. номинация')
     author_name = models.CharField(max_length=50, blank=False, verbose_name='Авторское название')
+    program = models.CharField(max_length=100, blank=False, verbose_name="Программа(ы), в которой выполнена работа")
+    age = models.CharField(max_length=2, choices=lists.AGE_MYMOSKVICHI, blank=False, verbose_name='Возрастная категория')
 
     def __str__(self):
         return str(self.reg_number)
@@ -134,6 +139,7 @@ class Mymoskvichi(Contest):
     def get_parm_for_pdf(self):
         parameters = (
             ('Конкурс', self.name),
+            ('Год проведения',self.year_contest),
             ('Регистрационный №', self.reg_number),
             ('Ф.И.О. участника/ов', self.fio),
             ('Учебное зав.', self.school),
@@ -142,9 +148,12 @@ class Mymoskvichi(Contest):
             ('Округ', self.teacher.get_district_display()),
             ('Ф.И.О. педагога/ов', self.fio_teacher),
             ('Email педагога', self.teacher.email),
+            ('Телефон',self.teacher.phone),
             ('Номинация №1', self.get_theme_display()),
             ('Номинация №2', self.get_theme_extra_display()),
             ('Авторское название', self.author_name),
+            ('Возрастная категория',self.get_age_display()),
+            ('Программа/ы',self.program)
         )
         return parameters
 
