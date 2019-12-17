@@ -2,7 +2,7 @@
 
 {% block content %}
     <div class="d-flex justify-content-center mt-4 text-info ">
-        <h2>Регистрация</h2>
+        <h2>Регистрация </h2>
     </div>
 
     <div class="container d-flex justify-content-between mt-4 ">
@@ -60,7 +60,7 @@
                     </div>
                     {{ form.position }}
                     <div class="input-group-prepend">
-                        <span class="input-group-text" id="">{{ form.age.label }}</span>
+                        <span class="input-group-text" id="">Ваша {{ form.age.label|lower }}</span>
                     </div>
                     {{ form.age }}
 

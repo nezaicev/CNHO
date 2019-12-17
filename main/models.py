@@ -129,6 +129,23 @@ class Mymoskvichi(Contest):
     def __str__(self):
         return str(self.reg_number)
 
+    def get_parm_for_pdf(self):
+        parameters = (
+            ('Конкурс', self.name),
+            ('Регистрационный №', self.reg_number),
+            ('Ф.И.О. участника/ов', self.fio),
+            ('Учебное зав.', self.school),
+            ('Регион', self.teacher.get_region_display()),
+            ('Город', self.teacher.city),
+            ('Округ', self.teacher.get_district_display()),
+            ('Ф.И.О. педагога/ов', self.fio_teacher),
+            ('Email педагога', self.teacher.email),
+            ('Номинация №1',self.get_theme_display()),
+            ('Номинация №2',self.get_theme_extra_display()),
+            ('Авторское название', self.author_name),
+        )
+        return parameters
+
     class Meta:
         verbose_name = 'Участник кон. "Мы Москвичи"'
         verbose_name_plural = 'Участники кон. "Мы Москвичи"'
