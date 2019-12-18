@@ -26,33 +26,42 @@ function setValueElementById(id, value) {
 
 }
 
-function setValueFIO(id, name) {
+function setValueFIO(id, name, count_input = 3) {
     let elements = document.getElementsByName(name);
     let value = '';
-        elements.forEach(function (item, i, arr) {
-            if (item !== undefined) {
-                let str = item.value.trim();
-                str = str[0].toUpperCase() + str.substring(1).toLowerCase();
-                if (((i) % 3) !== 0 || i === 0) {
-                    value += ' ' + str;
-                } else {
-                    value += ', ' + str;
-                }
+    let step = 0;
+    elements.forEach(function (item, i, arr) {
+        if (item !== undefined) {
 
+            let str = item.value.trim();
+            str = str[0].toUpperCase() + str.substring(1).toLowerCase();
+
+            if (step === count_input) {
+
+                value += ', ' + str;
+                step = 0;
+            } else {
+                value += ' ' + str;
             }
+            step++;
+        }
 
-        });
+    });
+
     let el = document.getElementById(id);
-    if (el.value){
-        el.value+=',';
-        el.value += value;}
-    else {
-        el.value=value;
+    if (el.value) {
+        el.value += ',';
+        el.value += value;
+
+    } else {
+        el.value = value;
+
     }
 
-
+    console.log(el.value);
 }
-function addButton(el){
+
+function addButton(el) {
     let button = document.createElement('button');
     button.innerHTML = '&#10006';
     button.className = 'btn btn-sm btn-danger delete-button-block-fio';
@@ -61,6 +70,7 @@ function addButton(el){
     });
     el.appendChild(button);
 }
+
 function addBlockFio(parent, child,) {
     addButton(child);
     child.querySelectorAll('input').forEach(function (item, i) {

@@ -22,7 +22,7 @@
 
                 <input class="form-control" placeholder="Фамилия" name="tmp_fio" required>
                 <input class="form-control" placeholder="Имя" name="tmp_fio" required>
-                <input class="form-control" placeholder="Отчество" name="tmp_fio" required>
+{#                <input class="form-control" placeholder="Отчество" name="tmp_fio" required>#}
 
             </div>
 
@@ -42,7 +42,7 @@
 
                     <input class="form-control col-4" placeholder="Фамилия" name="tmp_fio" required>
                     <input class="form-control col-4" placeholder="Имя" name="tmp_fio" required>
-                    <input class="form-control col-4" placeholder="Отчество" name="tmp_fio" required>
+{#                    <input class="form-control col-4" placeholder="Отчество" name="tmp_fio" required>#}
                     <button class='btn btn-sm btn-danger delete-button-block-fio'
                             onclick="fio_sub_block.remove()">&#10006
                     </button>
@@ -135,7 +135,7 @@
                 </div>
                 <div class="d-flex justify-content-end">
                     <button type="submit"
-                            onclick="setValueFIO('fio','tmp_fio');setValueFIO('fio_teacher','tmp_fio_teacher')"
+                            onclick="setValueFIO('fio','tmp_fio',2);setValueFIO('fio_teacher','tmp_fio_teacher')"
                             class="btn btn-outline-primary mt-2 mb-4 ">
                         Отправить
                     </button>
@@ -158,7 +158,7 @@
                 </div>
                 <div class="d-flex justify-content-end">
                     <button type="submit"
-                            onclick="setValueFIO('fio','tmp_fio');"
+                            onclick="setValueFIO('fio','tmp_fio',2);"
                             class="btn btn-outline-primary mt-2 mb-4 ">
                         Отправить
                     </button>
