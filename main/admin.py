@@ -11,11 +11,15 @@ class ArtakiadaAdmin(admin.ModelAdmin):
 
 
 class NRushevaAdmin(admin.ModelAdmin):
-    search_fields = ('reg_number', 'email', 'fio')
+    search_fields = ('reg_number', 'email', 'fio','fio_teacher')
+    list_display = ('reg_number', 'status', 'fio', 'school', 'region', 'district', 'fio_teacher', 'teacher',)
+    list_editable = ('status',)
 
 
 class MymoskvichiAdmin(admin.ModelAdmin):
-    search_fields = ('reg_number', 'email', 'fio')
+    search_fields = ('reg_number', 'email', 'fio','fio_teacher')
+    list_display = ('reg_number', 'status', 'fio_teacher', 'school', 'region', 'district', 'fio', 'teacher',)
+    list_editable = ('status',)
 
 
 class TeacherAdmin(admin.ModelAdmin):
