@@ -31,20 +31,20 @@ function setValueFIO(id, name, count_input = 3) {
     let value = '';
     let step = 0;
     elements.forEach(function (item, i, arr) {
-        if (item !== undefined) {
 
-            let str = item.value.trim();
-            str = str[0].toUpperCase() + str.substring(1).toLowerCase();
+            if (item.value.toLowerCase()!==item.value.toUpperCase()) {
+                let str = item.value.trim();
+                str = str[0].toUpperCase() + str.substring(1).toLowerCase();
 
-            if (step === count_input) {
+                if (step === count_input) {
 
-                value += ', ' + str;
-                step = 0;
-            } else {
-                value += ' ' + str;
+                    value += ', ' + str;
+                    step = 0;
+                } else {
+                    value += ' ' + str;
+                }
+                step++;
             }
-            step++;
-        }
 
     });
 
