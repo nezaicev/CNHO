@@ -80,6 +80,13 @@ class ArtakiadaContestForm(BaseContestForm):
 
 
 class NRushevaContestForm(BaseContestForm):
+    def clean_image(self):
+        data = self.cleaned_data['image']
+        if data.size > 20000000:
+            raise forms.ValidationError("Файл должен быть меньше 20 Мб.")
+
+        return data
+
     class Meta(BaseContestForm.Meta):
         model = NRusheva
         exclude = ('theme_extra','program')
