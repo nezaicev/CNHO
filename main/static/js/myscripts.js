@@ -26,30 +26,31 @@ function setValueElementById(id, value) {
 
 }
 
-function setValueFIO(id, name, count_input = 3) {
+function setValueFIO(id, name, count_input = 3, btn) {
+    let el = document.getElementById(id);
+    el.value = '';
     let elements = document.getElementsByName(name);
     let value = '';
     let step = 0;
     elements.forEach(function (item, i, arr) {
 
-            if (item.value.toLowerCase()!==item.value.toUpperCase()) {
-                let str = item.value.trim();
-                str = str[0].toUpperCase() + str.substring(1).toLowerCase();
+        if (item.value.toLowerCase() !== item.value.toUpperCase()) {
+            let str = item.value.trim();
+            str = str[0].toUpperCase() + str.substring(1).toLowerCase();
 
-                if (step === count_input) {
+            if (step === count_input) {
 
-                    value += ', ' + str;
-                    step = 0;
-                } else {
-                    value += ' ' + str;
-                }
-                step++;
+                value += ', ' + str;
+                step = 0;
+            } else {
+                value += ' ' + str;
             }
+            step++;
+        }
 
     });
 
-    let el = document.getElementById(id);
-    if (el.value) {
+    if (el.value && el.value !== value) {
         el.value += ',';
         el.value += value;
 
@@ -57,8 +58,7 @@ function setValueFIO(id, name, count_input = 3) {
         el.value = value;
 
     }
-
-    console.log(el.value);
+    btn.setAttribute('disabled', 'disabled')
 }
 
 function addButton(el) {
