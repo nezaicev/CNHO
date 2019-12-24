@@ -29,6 +29,9 @@ class BaseView(TemplateView):
             if request.session.get('contest') == 'mymoskvichi':
                 mymoskvici_tasks.delay(new_obj.id)
             return render(request, self.template, context)
+        else:
+            context={'errors':bound_form.errors}
+            return render(request,'error_registration.html',context)
 
     @classmethod
     def redirect_contest(cls, request):
