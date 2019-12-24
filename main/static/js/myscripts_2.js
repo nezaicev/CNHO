@@ -58,7 +58,7 @@ function setValueFIO(id, name, count_input = 3, btn) {
         el.value = value;
 
     }
-    // btn.setAttribute('disabled', 'disabled')
+
 }
 
 function addButton(el) {
