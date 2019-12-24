@@ -60,6 +60,42 @@ function setValueFIO(id, name, count_input = 3, btn) {
     }
 
 }
+function setValueFIOmymoskvichi(id, name, count_input = 3, btn) {
+
+    let el = document.getElementById(id);
+    let elements = document.getElementsByName(name);
+    if (el.value && elements.length===0){return true}
+
+    let value = '';
+    let step = 0;
+    elements.forEach(function (item, i, arr) {
+
+        if (item.value.toLowerCase() !== item.value.toUpperCase()) {
+            let str = item.value.trim();
+            str = str[0].toUpperCase() + str.substring(1).toLowerCase();
+
+            if (step === count_input) {
+
+                value += ', ' + str;
+                step = 0;
+            } else {
+                value += ' ' + str;
+            }
+            step++;
+        }
+
+    });
+
+    if (el.value && el.value !== value) {
+        el.value += ',';
+        el.value += value;
+
+    } else {
+        el.value = value;
+
+    }
+
+}
 
 function addButton(el) {
     let button = document.createElement('button');
