@@ -83,3 +83,7 @@ class TeacherView(BaseView, View):
             teacher = bound_form.save()
             request.session['id'] = teacher.id
             return self.redirect_contest(request)
+        else:
+            context = {'errors': bound_form.errors}
+            return render(request, 'error_registration.html', context)
+
