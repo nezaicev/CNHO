@@ -33,6 +33,10 @@ def mymoskvici_tasks(obj_id):
         utils.generate_pdf(obj.get_parm_for_pdf(), obj.name, obj.alias, obj.reg_number)
         utils.send_mail_contest(secret.EMAIL_MYMOSKVICI, obj.email, obj.reg_number, message_template, obj.name,obj.alias)
 
+@shared_task
+def send_mails_admin_tacks(list_email,message,subject):
+    utils.send_mail_from_admin(secret.EMAIL_ALL,list_email,message,subject)
+
 
 
 

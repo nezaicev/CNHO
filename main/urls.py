@@ -1,8 +1,8 @@
 from django.conf import settings
 from django.conf.urls.static import static
-from django.urls import path
+from django.urls import path, include
 
-from .views import Index,TeacherView, BaseView
+from .views import Index, TeacherView, BaseView
 from .forms import ArtakiadaContestForm, NRushevaContestForm, MymoskviciContestForm
 
 urlpatterns = [
@@ -17,7 +17,7 @@ urlpatterns = [
 
     path('contest_reg/mymoskvichi', BaseView.as_view(template='finish_registration.html', form=MymoskviciContestForm),
          name='mymoskvichi_form_registration_url'),
-path('contest_reg', BaseView.redirect_contest,
+    path('contest_reg', BaseView.redirect_contest,
          name='contest_reg'),
 
 ]

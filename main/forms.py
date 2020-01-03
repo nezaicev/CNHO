@@ -1,7 +1,13 @@
 from django import forms
 from django.forms import widgets
+from ckeditor_uploader.widgets import CKEditorUploadingWidget
 from main.models import Teacher, Artakiada, NRusheva, Mymoskvichi
 from main import lists
+
+
+class TextEditor(forms.Form):
+    theme = forms.CharField(widget=forms.TextInput, label='Тема')
+    editor = forms.CharField(widget=CKEditorUploadingWidget(), label='Содержание')
 
 
 class EmailForm(forms.ModelForm):
@@ -44,7 +50,8 @@ class BaseContestForm(forms.ModelForm):
     class Meta:
         model = None
         fields = ['fio', 'region', 'city', 'district', 'school', 'level', 'teacher', 'email', 'fio_teacher', 'age',
-                  'gender', 'theme', 'theme_extra', 'material', 'author_name', 'format', 'description', 'image','program']
+                  'gender', 'theme', 'theme_extra', 'material', 'author_name', 'format', 'description', 'image',
+                  'program']
         widgets = {
             'fio': forms.HiddenInput(attrs={'name': 'fio', 'id': 'fio'}),
             'level': forms.Select(attrs={'class': 'custom-select'}, choices=lists.LEVEL),
@@ -76,7 +83,8 @@ class ArtakiadaContestForm(BaseContestForm):
     class Meta(BaseContestForm.Meta):
         model = Artakiada
         exclude = (
-        'image', 'material', 'age', 'description', 'author_name', 'gender', 'theme', 'theme_extra', 'format', 'program')
+            'image', 'material', 'age', 'description', 'author_name', 'gender', 'theme', 'theme_extra', 'format',
+            'program')
 
 
 class NRushevaContestForm(BaseContestForm):
@@ -89,7 +97,7 @@ class NRushevaContestForm(BaseContestForm):
 
     class Meta(BaseContestForm.Meta):
         model = NRusheva
-        exclude = ('theme_extra','program')
+        exclude = ('theme_extra', 'program')
 
 
 class MymoskviciContestForm(BaseContestForm):

@@ -88,7 +88,17 @@ def send_mail_contest(secret, email, reg_number, message_template, name_contest,
     except:
         msg.send()
     connection.close()
-
+def send_mail_from_admin(secret,list_emails , message, subject):
+    connection = get_connection(host=settings.EMAIL_CONTEST['host'],
+                                port=settings.EMAIL_CONTEST['port'],
+                                username=secret['user'],
+                                password=secret['password'],
+                                use_tls=settings.EMAIL_CONTEST['use_tls'])
+    from_email = settings.EMAIL_CONTEST['from_contest']
+    msg = EmailMultiAlternatives(subject, message, from_email, list_emails, connection=connection)
+    msg.content_subtype = "html"
+    msg.send()
+    connection.close()
 
 def generate_year():
     year_contest = '{}-{} год'.format(time.strftime("%Y", time.localtime()), int(time.strftime("%Y", time.localtime())) + 1)
