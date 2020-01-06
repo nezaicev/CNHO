@@ -50,6 +50,7 @@ class ArtakiadaAdmin(BaseAdmin):
     search_fields = ('reg_number','email','fio','fio_teacher')
     list_display = ('reg_number','status', 'fio',  'school', 'region','district','fio_teacher','teacher',)
     list_editable = ('status',)
+    list_filter = ['status']
     actions=['send_emails','export_as_csv']
 
 
@@ -57,6 +58,7 @@ class NRushevaAdmin(BaseAdmin):
     search_fields = ('reg_number', 'email', 'fio','fio_teacher')
     list_display = ('reg_number', 'status', 'fio', 'school', 'region', 'district', 'fio_teacher', 'teacher',)
     list_editable = ('status',)
+    list_filter = ['status']
     actions = ['send_emails','export_as_csv']
 
 
@@ -64,12 +66,14 @@ class MymoskvichiAdmin(BaseAdmin):
     search_fields = ('reg_number', 'email', 'fio','fio_teacher')
     list_display = ('reg_number', 'status', 'fio_teacher', 'school', 'region', 'district', 'fio', 'teacher',)
     list_editable = ('status',)
+    list_filter = ['status']
     actions = ['send_emails','export_as_csv']
 
 
 class TeacherAdmin(BaseAdmin):
     search_fields = ('email','fio',)
     list_display = ('fio', 'school', 'email','region', 'district','status',)
+    list_filter = ['status']
     actions=['send_emails','export_as_csv']
 
 
