@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 
 import csv
-from main.tasks import send_mails_admin_tacks
+from main.tasks import send_mails_admin_tacks,nrusheva_tasks, artakiada_tasks, mymoskvici_tasks
 from main.models import Artakiada,NRusheva,Mymoskvichi,Teacher
 from main.forms import TextEditor
 
@@ -11,6 +11,15 @@ from main.forms import TextEditor
 
 
 class BaseAdmin(admin.ModelAdmin):
+    task_reg_info=None
+
+    def send_reg_info(self,request,queryset):
+        for obj in queryset:
+            self.task_reg_info.delay(obj.id)
+        self.message_user(request, "{} отправлено".format(queryset.count()))
+        return HttpResponseRedirect(request.get_full_path())
+    send_reg_info.short_description = 'Отправить регистрационные данные'
+
     def send_emails(self,request,queryset):
         if 'apply' in request.POST:
             list_emails=list(queryset.values_list('email',flat=True))
@@ -47,27 +56,30 @@ class BaseAdmin(admin.ModelAdmin):
 
 
 class ArtakiadaAdmin(BaseAdmin):
+    task_reg_info=artakiada_tasks
     search_fields = ('reg_number','email','fio','fio_teacher')
     list_display = ('reg_number','status', 'fio',  'school', 'region','district','fio_teacher','teacher',)
     list_editable = ('status',)
     list_filter = ['status']
-    actions=['send_emails','export_as_csv']
+    actions=['send_emails','export_as_csv','send_reg_info']
 
 
 class NRushevaAdmin(BaseAdmin):
+    task_reg_info = nrusheva_tasks
     search_fields = ('reg_number', 'email', 'fio','fio_teacher')
     list_display = ('reg_number', 'status', 'fio', 'school', 'region', 'district', 'fio_teacher', 'teacher',)
     list_editable = ('status',)
     list_filter = ['status']
-    actions = ['send_emails','export_as_csv']
+    actions = ['send_emails','export_as_csv','send_reg_info']
 
 
 class MymoskvichiAdmin(BaseAdmin):
+    task_reg_info = mymoskvici_tasks
     search_fields = ('reg_number', 'email', 'fio','fio_teacher')
     list_display = ('reg_number', 'status', 'fio_teacher', 'school', 'region', 'district', 'fio', 'teacher',)
     list_editable = ('status',)
     list_filter = ['status']
-    actions = ['send_emails','export_as_csv']
+    actions = ['send_emails','export_as_csv','send_reg_info']
 
 
 class TeacherAdmin(BaseAdmin):
