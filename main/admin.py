@@ -37,7 +37,9 @@ class BaseAdmin(admin.ModelAdmin):
         field_names = [field.name for field in meta.fields]
         response = HttpResponse(content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename={}.csv'.format(meta)
-        writer = csv.writer(response)
+
+        response.write(u'\ufeff'.encode('utf8'))
+        writer = csv.writer(response, delimiter=',')
 
         writer.writerow(field_names)
         for obj in queryset:
@@ -60,7 +62,7 @@ class ArtakiadaAdmin(BaseAdmin):
     search_fields = ('reg_number','email','fio','fio_teacher')
     list_display = ('reg_number','status', 'fio',  'school', 'region','district','fio_teacher','teacher',)
     list_editable = ('status',)
-    list_filter = ['status']
+    list_filter = ['status','district']
     actions=['send_emails','export_as_csv','send_reg_info']
 
 
