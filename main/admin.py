@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 
 import csv
+import xlwt
 from main.tasks import send_mails_admin_tacks,nrusheva_tasks, artakiada_tasks, mymoskvici_tasks
 from main.models import Artakiada,NRusheva,Mymoskvichi,Teacher
 from main.forms import TextEditor
@@ -30,6 +31,42 @@ class BaseAdmin(admin.ModelAdmin):
         return render(request, 'admin/editor_emails.html', context={'orders': queryset, 'form': TextEditor()})
 
     send_emails.short_description = 'Отправить письмо'
+
+    def export_as_xls(self,request,queryset):
+        exclude_field=['date_reg','teacher','image']
+        meta = self.model._meta
+        field_names = [field.name for field in meta.fields]
+        response = HttpResponse(content_type='application/ms-excel')
+        response['Content-Disposition'] = 'attachment; filename={}.xls'.format(meta)
+
+        wb = xlwt.Workbook(encoding='utf-8')
+        ws = wb.add_sheet('Users')
+
+        # Sheet header, first row
+        row_num = 0
+        font_style = xlwt.XFStyle()
+        font_style.font.bold = True
+
+        for col_num in range(len(field_names)):
+            ws.write(row_num, col_num, field_names[col_num], font_style)
+
+        # Sheet body, remaining rows
+        font_style = xlwt.XFStyle()
+        for ridx, obj in enumerate(queryset):
+            ridx+=1
+            for cidx, field in enumerate(obj._meta.fields):
+                if field.name not in exclude_field:
+                    if field.choices:
+                        val = obj._get_FIELD_display(field)
+                        ws.write(ridx, cidx, val, font_style)
+                    else:
+                        val = getattr(obj, field.name)
+                        ws.write(ridx, cidx, val, font_style)
+
+        wb.save(response)
+        return response
+
+    export_as_xls.short_description = 'Выгрузить список Excel'
 
     def export_as_csv(self, request, queryset):
 
@@ -63,7 +100,7 @@ class ArtakiadaAdmin(BaseAdmin):
     list_display = ('reg_number','status', 'fio',  'school', 'region','district','fio_teacher','teacher',)
     list_editable = ('status',)
     list_filter = ['status','district']
-    actions=['send_emails','export_as_csv','send_reg_info']
+    actions=['send_emails','export_as_csv','send_reg_info','export_as_xls']
 
 
 class NRushevaAdmin(BaseAdmin):
@@ -72,7 +109,7 @@ class NRushevaAdmin(BaseAdmin):
     list_display = ('reg_number', 'status', 'fio', 'school', 'region', 'district', 'fio_teacher', 'teacher',)
     list_editable = ('status',)
     list_filter = ['status']
-    actions = ['send_emails','export_as_csv','send_reg_info']
+    actions = ['send_emails','export_as_csv','send_reg_info','export_as_xls']
 
 
 class MymoskvichiAdmin(BaseAdmin):
@@ -81,14 +118,14 @@ class MymoskvichiAdmin(BaseAdmin):
     list_display = ('reg_number', 'status', 'fio_teacher', 'school', 'region', 'district', 'fio', 'teacher',)
     list_editable = ('status',)
     list_filter = ['status']
-    actions = ['send_emails','export_as_csv','send_reg_info']
+    actions = ['send_emails','export_as_csv','send_reg_info','export_as_xls']
 
 
 class TeacherAdmin(BaseAdmin):
     search_fields = ('email','fio',)
     list_display = ('fio', 'school', 'email','region', 'district','status',)
     list_filter = ['status']
-    actions=['send_emails','export_as_csv']
+    actions=['send_emails','export_as_csv','export_as_xls']
 
 
 admin.site.register(Artakiada, ArtakiadaAdmin)
