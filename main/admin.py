@@ -1,8 +1,10 @@
 from django.contrib import admin
+from django.conf import settings
 from django.shortcuts import render
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse,HttpResponseNotFound,FileResponse
 
 import csv
+import os
 import xlwt
 from main.tasks import send_mails_admin_tacks,nrusheva_tasks, artakiada_tasks, mymoskvici_tasks
 from main.models import Artakiada,NRusheva,Mymoskvichi,Teacher
@@ -12,7 +14,22 @@ from main.forms import TextEditor
 
 
 class BaseAdmin(admin.ModelAdmin):
+    name=None
     task_reg_info=None
+
+    def export_list_info(self,request,queryset):
+        meta = self.model._meta
+        reg_number=queryset[0].reg_number
+        file_location=None
+        try:
+            file_location = os.path.join(settings.MEDIA_ROOT, 'pdf', self.name, f'{reg_number}.pdf')
+            response = FileResponse(open(file_location, 'rb'))
+            return response
+        except:
+            self.message_user(request, "{} не найден".format(file_location))
+            return HttpResponseRedirect(request.get_full_path())
+
+    export_list_info.short_description='Скачать регистрационный лист участника'
 
     def send_reg_info(self,request,queryset):
         for obj in queryset:
@@ -91,16 +108,17 @@ class BaseAdmin(admin.ModelAdmin):
             writer.writerow(row)
         return response
 
-    export_as_csv.short_description = 'Выгрузить список'
+    export_as_csv.short_description = 'Выгрузить список СSV'
 
 
 class ArtakiadaAdmin(BaseAdmin):
+    name = 'artakiada'
     task_reg_info=artakiada_tasks
     search_fields = ('reg_number','email','fio','fio_teacher')
     list_display = ('reg_number', 'fio',  'school', 'region','district','fio_teacher','teacher','status')
     list_editable = ('status',)
     list_filter = ['status','district']
-    actions=['send_emails','export_as_csv','send_reg_info','export_as_xls']
+    actions=['send_emails','export_as_csv','send_reg_info','export_list_info','export_as_xls']
 
 
 class NRushevaAdmin(BaseAdmin):
