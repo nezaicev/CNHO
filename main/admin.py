@@ -97,7 +97,7 @@ class BaseAdmin(admin.ModelAdmin):
 class ArtakiadaAdmin(BaseAdmin):
     task_reg_info=artakiada_tasks
     search_fields = ('reg_number','email','fio','fio_teacher')
-    list_display = ('reg_number','status', 'fio',  'school', 'region','district','fio_teacher','teacher',)
+    list_display = ('reg_number', 'fio',  'school', 'region','district','fio_teacher','teacher','status')
     list_editable = ('status',)
     list_filter = ['status','district']
     actions=['send_emails','export_as_csv','send_reg_info','export_as_xls']
@@ -106,7 +106,7 @@ class ArtakiadaAdmin(BaseAdmin):
 class NRushevaAdmin(BaseAdmin):
     task_reg_info = nrusheva_tasks
     search_fields = ('reg_number', 'email', 'fio','fio_teacher')
-    list_display = ('reg_number', 'status', 'fio', 'school', 'region', 'district', 'fio_teacher', 'teacher',)
+    list_display = ('reg_number', 'fio', 'school', 'region', 'district', 'fio_teacher', 'teacher','status')
     list_editable = ('status',)
     list_filter = ['status']
     actions = ['send_emails','export_as_csv','send_reg_info','export_as_xls']
@@ -115,7 +115,7 @@ class NRushevaAdmin(BaseAdmin):
 class MymoskvichiAdmin(BaseAdmin):
     task_reg_info = mymoskvici_tasks
     search_fields = ('reg_number', 'email', 'fio','fio_teacher')
-    list_display = ('reg_number', 'status', 'fio_teacher', 'school', 'region', 'district', 'fio', 'teacher',)
+    list_display = ('reg_number', 'fio_teacher', 'school', 'region', 'district', 'fio', 'teacher', 'status')
     list_editable = ('status',)
     list_filter = ['status']
     actions = ['send_emails','export_as_csv','send_reg_info','export_as_xls']
