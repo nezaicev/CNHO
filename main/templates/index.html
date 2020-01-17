@@ -3,49 +3,50 @@
 {% block content %}
     <div class="container mt-4 ">
         <div class="row">
-            <a href="#">
-                <div class="col-md-6 mb-4 col-lg-4">
-{#                     onclick="let el=document.getElementById('contest'); el.value='artakiada'"#}
-{#                     data-toggle="modal" data-target="#exampleModal">#}
-                    <div class="service-29193 text-center">
+
+            <div class="col-md-6 mb-4 col-lg-4">
+
+                <div class="service-29193 text-center">
                             <span class="img-wrap mb-5">
                             <img src="{% static '/img/artakiada.png' %} " alt="Image" class="img-fluid mb-4">
                             </span>
-                        <h5 class="mb-4"><a href="#">АРТакиада "Изображение и слово"</a></h5>
-                        <p>Очный творческий конкурс юных иллюстраторов. Связь литературы и искусства</p>
-                        <p style="color: indianred">Уважаемые педагоги и участники АРТакиады!
-                            Регистрация победителей и призёров 1 тура ЗАКРЫТА!
-                            Результаты второго тура будут доступны  по ссылке  присланной вам по почте до 8 февраля</p>
-                    </div>
+                    <h5 class="mb-4
+{#                     onclick="let el=document.getElementById('contest'); el.value='artakiada'"#}
+{#                     data-toggle="modal" data-target="#exampleModal">#}"><a href="#">АРТакиада "Изображение и
+                        слово"</a></h5>
+                    <p>Очный творческий конкурс юных иллюстраторов. Связь литературы и искусства</p>
+                    <p style="color: indianred">Уважаемые педагоги и участники АРТакиады!
+                        Регистрация победителей и призёров 1 тура ЗАКРЫТА!
+                        Результаты второго тура будут доступны по ссылке присланной вам по почте до 8 февраля</p>
                 </div>
-            </a>
-            <a href="#">
-                <div class="col-md-6 mb-4 col-lg-4 "
-                     onclick="let el=document.getElementById('contest'); el.value='mymoskvichi'"
-                     data-toggle="modal" data-target="#exampleModal">
-                    <div class="service-29193 text-center">
+            </div>
+
+
+            <div class="col-md-6 mb-4 col-lg-4 ">
+                <div class="service-29193 text-center">
                             <span class="img-wrap mb-5">
                             <img src="{% static '/img/mymoskvichi_300.jpg' %}" alt="Image" class="img-fluid mb-3 mt-4">
                             </span>
-                        <h5 class="mb-4"><a href="#">Конкурс мультимедия<br>"Мы Москвичи"</a></h5>
-                        <p>Овладение цифровыми технологиями в художественном творчестве</p>
-                    </div>
+                    <h5 class="mb-4" onclick="let el=document.getElementById('contest'); el.value='mymoskvichi'"
+                        data-toggle="modal" data-target="#exampleModal"><a href="#">Конкурс мультимедия<br>"Мы Москвичи"</a>
+                    </h5>
+                    <p>Овладение цифровыми технологиями в художественном творчестве</p>
                 </div>
-            </a>
-            <a href="#">
-                <div class="col-md-6 mb-4 col-lg-4"
-                     onclick="let el=document.getElementById('contest'); el.value='nrusheva'"
-                     data-toggle="modal" data-target="#exampleModal">
-                    <div class="service-29193 text-center">
+            </div>
+
+
+            <div class="col-md-6 mb-4 col-lg-4">
+                <div class="service-29193 text-center">
                             <span class="img-wrap mb-5">
                             <img src="{% static '/img/nrusheva_200.jpg' %}" alt="Image" class="img-fluid mb-3">
                             </span>
-                        <h5 class="mb-4"><a href="#">Московский конкурс детского рисунка им. Нади Рушевой</a></h5>
-                        <p>Посвящается художественному отражению юбилейных и граждански значимых событий года</p>
-                    </div>
+                    <h5 class="mb-4" onclick="let el=document.getElementById('contest'); el.value='nrusheva'"
+                        data-toggle="modal" data-target="#exampleModal"><a href="#">Московский конкурс детского рисунка
+                        им. Нади Рушевой</a></h5>
+                    <p>Посвящается художественному отражению юбилейных и граждански значимых событий года</p>
                 </div>
+            </div>
 
-            </a>
         </div>
         <div class="service-29193 text-center">
             При возникновении технических проблем обращайтесь по адресу volkovas@mioo.ru
@@ -82,7 +83,7 @@
 
                         </div>
                         <p>Будьте внимательны при внесении данных, они не корректируются</p>
-                         <!-- contest -->
+                        <!-- contest -->
                         {{ form.info }}
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-primary">Далее</button>
