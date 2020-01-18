@@ -1,6 +1,12 @@
+'use strict';
+
+function set_contest(id, nameContest) {
+    var el = document.getElementById(id);el.value = nameContest;
+}
+
 function regionChanged(value) {
-    district = document.getElementById('id_district');
-    city = document.getElementById('id_city');
+    var district = document.getElementById('id_district');
+    var city = document.getElementById('id_city');
     if (value === '77') {
         district.style.display = 'block';
         city.value = 'г. Москва';
@@ -10,32 +16,31 @@ function regionChanged(value) {
         city.setAttribute('type', 'text');
         city.value = '';
     }
-
-
 }
 
 function getParameterUrl(prm) {
     url = new URL(document.location.href);
-    return url.searchParams.get(prm)
+    return url.searchParams.get(prm);
 }
 
 function setValueElementById(id, value) {
-    let el = document.getElementById(id);
+    var el = document.getElementById(id);
     el.value = value;
-
-
 }
 
-function setValueFIO(id, name, count_input = 3, btn) {
-    let el = document.getElementById(id);
+function setValueFIO(id, name) {
+    var count_input = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 3;
+    var btn = arguments[3];
+
+    var el = document.getElementById(id);
     el.value = '';
-    let elements = document.getElementsByName(name);
-    let value = '';
-    let step = 0;
+    var elements = document.getElementsByName(name);
+    var value = '';
+    var step = 0;
     elements.forEach(function (item, i, arr) {
 
         if (item.value.toLowerCase() !== item.value.toUpperCase()) {
-            let str = item.value.trim();
+            var str = item.value.trim();
             str = str[0].toUpperCase() + str.substring(1).toLowerCase();
 
             if (step === count_input) {
@@ -47,31 +52,32 @@ function setValueFIO(id, name, count_input = 3, btn) {
             }
             step++;
         }
-
     });
 
     if (el.value && el.value !== value) {
         el.value += ',';
         el.value += value;
-
     } else {
         el.value = value;
-
     }
-
 }
-function setValueFIOmymoskvichi(id, name, count_input = 3, btn) {
+function setValueFIOmymoskvichi(id, name) {
+    var count_input = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 3;
+    var btn = arguments[3];
 
-    let el = document.getElementById(id);
-    let elements = document.getElementsByName(name);
-    if (el.value && elements.length===0){return true}
 
-    let value = '';
-    let step = 0;
+    var el = document.getElementById(id);
+    var elements = document.getElementsByName(name);
+    if (el.value && elements.length === 0) {
+        return true;
+    }
+
+    var value = '';
+    var step = 0;
     elements.forEach(function (item, i, arr) {
 
         if (item.value.toLowerCase() !== item.value.toUpperCase()) {
-            let str = item.value.trim();
+            var str = item.value.trim();
             str = str[0].toUpperCase() + str.substring(1).toLowerCase();
 
             if (step === count_input) {
@@ -83,39 +89,33 @@ function setValueFIOmymoskvichi(id, name, count_input = 3, btn) {
             }
             step++;
         }
-
     });
 
     if (el.value && el.value !== value) {
         el.value += ',';
         el.value += value;
-
     } else {
         el.value = value;
-
     }
-
 }
 
 function addButton(el) {
-    let button = document.createElement('button');
+    var button = document.createElement('button');
     button.innerHTML = '&#10006';
     button.className = 'btn btn-sm btn-danger delete-button-block-fio';
     button.addEventListener('click', function () {
-        el.remove()
+        el.remove();
     });
     el.appendChild(button);
 }
 
-function addBlockFio(parent, child,) {
+function addBlockFio(parent, child) {
     addButton(child);
     child.querySelectorAll('input').forEach(function (item, i) {
         item.value = '';
         if (item.lastChild) {
-            item.value += ','
+            item.value += ',';
         }
     });
     parent.appendChild(child);
-
-
 }
