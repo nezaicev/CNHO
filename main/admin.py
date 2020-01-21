@@ -124,10 +124,10 @@ class ArtakiadaAdmin(BaseAdmin):
 class NRushevaAdmin(BaseAdmin):
     task_reg_info = nrusheva_tasks
     search_fields = ('reg_number', 'email', 'fio','fio_teacher')
-    list_display = ('reg_number', 'fio', 'school', 'region', 'district', 'fio_teacher', 'teacher','status')
+    list_display = ('reg_number','status','image_tag', 'fio', 'school', 'region', 'district', 'fio_teacher', 'teacher',)
     list_editable = ('status',)
     list_filter = ['status']
-    actions = ['send_emails','export_as_csv','send_reg_info','export_as_xls']
+    actions = ['send_emails','export_as_csv','send_reg_info','export_list_info','export_as_xls']
 
 
 class MymoskvichiAdmin(BaseAdmin):
@@ -136,7 +136,7 @@ class MymoskvichiAdmin(BaseAdmin):
     list_display = ('reg_number', 'fio_teacher', 'school', 'region', 'district', 'fio', 'teacher', 'status')
     list_editable = ('status',)
     list_filter = ['status']
-    actions = ['send_emails','export_as_csv','send_reg_info','export_as_xls']
+    actions = ['send_emails','export_as_csv','send_reg_info','export_list_info','export_as_xls',]
 
 
 class TeacherAdmin(BaseAdmin):

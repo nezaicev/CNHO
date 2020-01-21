@@ -1,5 +1,6 @@
 import time
 from django.db import models
+from django.utils.safestring import mark_safe
 from main import lists, utils
 
 
@@ -120,6 +121,14 @@ class NRusheva(Contest):
             ('Телефон', self.teacher.phone),
         )
         return parameters
+
+    def image_tag(self):
+        if self.image:
+            return mark_safe('<a  href="%s" class="image-link">img</a>' % self.image.url)
+        else:
+            return 'No Image Found'
+
+    image_tag.short_description = 'Image'
 
 
 class Mymoskvichi(Contest):
