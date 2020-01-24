@@ -12,6 +12,7 @@ def nrusheva_tasks(obj_id):
         utils.generate_barcode(obj.reg_number)
         utils.generate_pdf(obj.get_parm_for_pdf(), obj.name,obj.alias, obj.reg_number)
         utils.send_mail_contest(secret.EMAIL_NRUSHEVA,obj.email,obj.reg_number,message_template,obj.name,obj.alias)
+        utils.rotate_img(obj.image.path)
 
 
 @shared_task
