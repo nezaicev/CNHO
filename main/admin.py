@@ -9,6 +9,7 @@ import xlwt
 from main.tasks import send_mails_admin_tacks,nrusheva_tasks, artakiada_tasks, mymoskvici_tasks
 from main.models import Artakiada,NRusheva,Mymoskvichi,Teacher
 from main.forms import TextEditor
+from main.utils import generate_report
 
 # Register your models here.
 
@@ -48,6 +49,7 @@ class BaseAdmin(admin.ModelAdmin):
         return render(request, 'admin/editor_emails.html', context={'orders': queryset, 'form': TextEditor()})
 
     send_emails.short_description = 'Отправить письмо'
+
 
     def export_as_xls(self,request,queryset):
         exclude_field=['date_reg','teacher','image']
@@ -118,7 +120,13 @@ class ArtakiadaAdmin(BaseAdmin):
     list_display = ('reg_number', 'fio',  'school', 'region','district','fio_teacher','teacher','status')
     list_editable = ('status',)
     list_filter = ['status','district']
-    actions=['send_emails','export_as_csv','send_reg_info','export_list_info','export_as_xls']
+    actions=['send_emails','export_as_csv','send_reg_info','export_list_info','export_as_xls','get_report']
+
+    def get_report(self,request,queryset):
+        response= generate_report(Artakiada)
+        return response
+    get_report.short_description = 'Сформировать отчет'
+
 
 
 class NRushevaAdmin(BaseAdmin):

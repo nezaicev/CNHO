@@ -1,10 +1,13 @@
 import re
 import os
 import time
+from datetime import date
 from django.conf import settings
+from django.http import HttpResponse
 from django.core.mail import EmailMultiAlternatives, get_connection
 from django.template.loader import render_to_string
 import barcode
+import xlwt
 from PIL import Image, ExifTags
 from barcode.writer import ImageWriter
 from reportlab.pdfgen import canvas
@@ -17,6 +20,64 @@ from reportlab.lib import colors
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.lib.styles import ParagraphStyle
+from main import lists
+
+
+def generate_report(model):
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename={}.xls'.format(model._meta)
+
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Stat')
+
+    # Sheet header, first row
+    row_num = 0
+    list_district = [i for i in range(1, lists.DISTRICT.__len__() + 1)]
+    font_style = xlwt.XFStyle()
+    font_style.font.bold = True
+    ws.write(row_num, 1, 'Общее кол-во', font_style)
+    ws.write(row_num, 2, 'Участник 2 тура (кол-во)', font_style)
+    ws.write(row_num, 3, 'Призер 2 тура (кол-во)', font_style)
+    ws.write(row_num, 4, 'Победитель 2 тура (кол-во)', font_style)
+    ws.write(row_num, 5, 'Без статуса (кол-во)', font_style)
+    ws.write(row_num, 6, '1-4 класс (кол-во)', font_style)
+    ws.write(row_num, 7, '5-8 класс (кол-во)', font_style)
+    row_num += 1
+
+    for rindx, district in enumerate(lists.DISTRICT):
+        row_num+=1
+        ws.write(row_num, 0, district[1], font_style)
+        ws.write(row_num, 1, model.objects.filter(district=district[0]).count(), font_style)
+        ws.write(row_num, 2, model.objects.filter(district=district[0], status=2).count(), font_style)
+        ws.write(row_num, 3, model.objects.filter(district=district[0], status=3).count(), font_style)
+        ws.write(row_num, 4, model.objects.filter(district=district[0], status=4).count(), font_style)
+        ws.write(row_num, 5, model.objects.filter(district=district[0], status='').count(), font_style)
+        ws.write(row_num, 6, model.objects.filter(district=district[0],
+                                                level__in=[0, 1, 2, 3, 4]).count(),font_style)
+        ws.write(row_num, 7, model.objects.filter(district=district[0],
+                                                level__in=[5, 6, 7, 8]).count(),font_style)
+        # row_num = rindx
+    row_num+=3
+    ws.write(row_num, 0, 'Общее колличество участников: ', font_style)
+    ws.write(row_num , 1, model.objects.all().count(), font_style)
+    row_num+=1
+    ws.write(row_num, 0, 'Москва', font_style)
+    ws.write(row_num, 1, model.objects.filter(region=77).count(), font_style)
+    row_num += 1
+    ws.write(row_num, 0, 'Моская обл.', font_style)
+    ws.write(row_num, 1, model.objects.filter(region=50).count(), font_style)
+    row_num += 1
+    ws.write(row_num, 0, 'Регионы', font_style)
+    ws.write(row_num, 1, model.objects.exclude(region__in=[77, 50]).count(), font_style)
+    row_num+=1
+    ws.write(row_num, 0, 'Дата формирования отчета', font_style)
+    ws.write(row_num, 1,str(date.today()) , font_style)
+
+
+    # Sheet body, remaining rows
+    font_style = xlwt.XFStyle()
+    wb.save(response)
+    return response
 
 
 def rotate_img(path):
@@ -38,7 +99,6 @@ def rotate_img(path):
 
     except (AttributeError, KeyError, IndexError):
         pass
-
 
 def generate_barcode(reg_number):
     EAN = barcode.get_barcode_class('code128')
@@ -110,7 +170,9 @@ def send_mail_contest(secret, email, reg_number, message_template, name_contest,
     except:
         msg.send()
     connection.close()
-def send_mail_from_admin(secret,list_emails , message, subject):
+
+
+def send_mail_from_admin(secret, list_emails, message, subject):
     connection = get_connection(host=settings.EMAIL_CONTEST['host'],
                                 port=settings.EMAIL_CONTEST['port'],
                                 username=secret['user'],
@@ -122,6 +184,8 @@ def send_mail_from_admin(secret,list_emails , message, subject):
     msg.send()
     connection.close()
 
+
 def generate_year():
-    year_contest = '{}-{} год'.format(time.strftime("%Y", time.localtime()), int(time.strftime("%Y", time.localtime())) + 1)
+    year_contest = '{}-{} год'.format(time.strftime("%Y", time.localtime()),
+                                      int(time.strftime("%Y", time.localtime())) + 1)
     return year_contest
