@@ -23,14 +23,16 @@ class Contest(models.Model):
     def save(self, *args, **kwargs):
         if not self.pk:
             self.reg_number = int(time.time())
-        super(Contest, self).save(*args, **kwargs)
+
         if self.pk:
             if not os.path.exists(os.path.join(settings.BARCODE_MEDIA_ROOT,'{}.png'.format(self.reg_number))):
                 utils.generate_barcode(self.reg_number)
                 utils.generate_pdf(self.get_parm_for_pdf(), self.name, self.alias, self.reg_number)
-
+                print(1)
             else:
                 utils.generate_pdf(self.get_parm_for_pdf(), self.name, self.alias, self.reg_number)
+                print(2)
+        super(Contest, self).save(*args, **kwargs)
 
     class Meta:
         abstract = True
