@@ -1,5 +1,7 @@
 import time
+import os.path
 from django.db import models
+from django.conf import settings
 from django.utils.safestring import mark_safe
 from main import lists, utils
 
@@ -22,6 +24,13 @@ class Contest(models.Model):
         if not self.pk:
             self.reg_number = int(time.time())
         super(Contest, self).save(*args, **kwargs)
+        if self.pk:
+            if not os.path.exists(os.path.join(settings.BARCODE_MEDIA_ROOT,'{}.png'.format(self.reg_number))):
+                utils.generate_barcode(self.reg_number)
+                utils.generate_pdf(self.get_parm_for_pdf(), self.name, self.alias, self.reg_number)
+
+            else:
+                utils.generate_pdf(self.get_parm_for_pdf(), self.name, self.alias, self.reg_number)
 
     class Meta:
         abstract = True
