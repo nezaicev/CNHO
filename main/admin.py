@@ -1,17 +1,19 @@
 import os
 import csv
 import xlwt
+import zipfile
+import time
 
 from django.contrib import admin
 from django.conf import settings
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse, FileResponse
 from django.utils.translation import gettext_lazy as _
-
-from main.tasks import send_mails_admin_tacks, nrusheva_tasks, artakiada_tasks, mymoskvici_tasks
+import secret
+from main.tasks import send_mails_admin_tacks, nrusheva_tasks, artakiada_tasks, mymoskvici_tasks, send_mails_to_teacher_with_zip
 from main.models import Artakiada, NRusheva, Mymoskvichi, Teacher
 from main.forms import TextEditor
-from main.utils import generate_report
+from main.utils import generate_report, generate_pdf,generate_barcode,generate_xls,send_mail_contest
 
 
 # Register your models here.
@@ -23,17 +25,21 @@ class ContestListFilter(admin.SimpleListFilter):
 
     def lookups(self, request, model_admin):
         return (
-            ('art', ('Артакиада')),
-            ('mosk', ('Мы Москвичи')),
-            ('nrush', ('Н.Рушева')),
+            ('art_all', ('Артакиада')),
+            ('art_level_2', ('Победители и призеры 2 тур (Артакиада) ')),
+            ('mosk_all', ('Мы Москвичи')),
+            ('nrush_all', ('Н.Рушева')),
         )
 
     def queryset(self, request, queryset):
-        if self.value() == 'art':
+        if self.value() == 'art_all':
             return queryset.filter(id__in=Artakiada.objects.values('teacher_id'))
-        if self.value() == 'mosk':
+        if self.value() == 'art_level_2':
+            return queryset.filter(id__in=Artakiada.objects.filter(status__in=[3,4]).values('teacher_id'))
+
+        if self.value() == 'mosk_all':
             return queryset.filter(id__in=Mymoskvichi.objects.values('teacher_id'))
-        if self.value() == 'nrush':
+        if self.value() == 'nrush_all':
             return queryset.filter(id__in=NRusheva.objects.values('teacher_id'))
 
 
@@ -78,34 +84,11 @@ class BaseAdmin(admin.ModelAdmin):
         exclude_field = ['date_reg', 'teacher', 'image']
         meta = self.model._meta
         field_names = [field.name for field in meta.fields]
+        path = os.path.join(settings.MEDIA_ROOT, 'xls', 'report.xls')
         response = HttpResponse(content_type='application/ms-excel')
         response['Content-Disposition'] = 'attachment; filename={}.xls'.format(meta)
-
-        wb = xlwt.Workbook(encoding='utf-8')
-        ws = wb.add_sheet('Users')
-
-        # Sheet header, first row
-        row_num = 0
-        font_style = xlwt.XFStyle()
-        font_style.font.bold = True
-
-        for col_num in range(len(field_names)):
-            ws.write(row_num, col_num, field_names[col_num], font_style)
-
-        # Sheet body, remaining rows
-        font_style = xlwt.XFStyle()
-        for ridx, obj in enumerate(queryset):
-            ridx += 1
-            for cidx, field in enumerate(obj._meta.fields):
-                if field.name not in exclude_field:
-                    if field.choices:
-                        val = obj._get_FIELD_display(field)
-                        ws.write(ridx, cidx, val, font_style)
-                    else:
-                        val = getattr(obj, field.name)
-                        ws.write(ridx, cidx, val, font_style)
-
-        wb.save(response)
+        generate_xls(queryset,field_names,exclude_field,path)
+        response=FileResponse(open(path, 'rb'))
         return response
 
     export_as_xls.short_description = 'Выгрузить список Excel'
@@ -176,8 +159,18 @@ class MymoskvichiAdmin(BaseAdmin):
 class TeacherAdmin(BaseAdmin):
     search_fields = ('email', 'fio',)
     list_display = ('fio', 'school', 'email', 'region', 'district', 'status',)
-    list_filter = ('status', ContestListFilter,)
-    actions = ['send_emails', 'export_as_csv', 'export_as_xls']
+    list_filter = ('status', ContestListFilter,'region')
+    actions = ['send_emails', 'export_as_csv', 'export_as_xls','send_zip_with_pdf_artakiada']
+
+    def send_zip_with_pdf_artakiada(self,request,queryset):
+        meta = Artakiada._meta
+        exclude_field = ['date_reg', 'teacher', 'image']
+        field_names = [field.name for field in meta.fields]
+        message_template='letters/artakiada_2_level_leter.html'
+        filter=request.GET
+        for i in queryset:
+            send_mails_to_teacher_with_zip.delay(i.id,field_names,exclude_field,i.email,message_template,filter)
+    send_zip_with_pdf_artakiada.short_description = 'Рассылка списков и рег. листов (артакиада)'
 
 
 admin.site.register(Artakiada, ArtakiadaAdmin)

@@ -23,6 +23,35 @@ from reportlab.lib.styles import ParagraphStyle
 from main import lists
 
 
+def generate_xls(queryset,field_names,exclude_field,path):
+
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Users')
+
+    # Sheet header, first row
+    row_num = 0
+    font_style = xlwt.XFStyle()
+    font_style.font.bold = True
+
+    for col_num in range(len(field_names)):
+        ws.write(row_num, col_num, field_names[col_num], font_style)
+
+    # Sheet body, remaining rows
+    font_style = xlwt.XFStyle()
+    for ridx, obj in enumerate(queryset):
+        ridx += 1
+        for cidx, field in enumerate(obj._meta.fields):
+            if field.name not in exclude_field:
+                if field.choices:
+                    val = obj._get_FIELD_display(field)
+                    ws.write(ridx, cidx, val, font_style)
+                else:
+                    val = getattr(obj, field.name)
+                    ws.write(ridx, cidx, val, font_style)
+
+    wb.save(path)
+
+
 def generate_report(model):
     response = HttpResponse(content_type='application/ms-excel')
     response['Content-Disposition'] = 'attachment; filename={}.xls'.format(model._meta)
@@ -164,7 +193,11 @@ def send_mail_contest(secret, email, reg_number, message_template, name_contest,
     msg = EmailMultiAlternatives(subject, message, from_email, list_emails, connection=connection)
     msg.content_subtype = "html"
     try:
-        attached_file = os.path.join(settings.MEDIA_ROOT, 'pdf', alias, f'{reg_number}.pdf')
+        if alias != 'teacher':
+            attached_file = os.path.join(settings.MEDIA_ROOT, 'pdf', alias, f'{reg_number}.pdf')
+        else:
+            attached_file = os.path.join(settings.MEDIA_ROOT, 'zip', f'{reg_number}.zip')
+
         msg.attach_file(attached_file, mimetype='text/html')
         msg.send()
     except:
