@@ -35,7 +35,7 @@ class ContestListFilter(admin.SimpleListFilter):
         if self.value() == 'art_all':
             return queryset.filter(id__in=Artakiada.objects.values('teacher_id'))
         if self.value() == 'art_level_2':
-            return queryset.filter(id__in=Artakiada.objects.filter(status__in=[3,4]).values('teacher_id'))
+            return queryset.filter(id__in=Artakiada.objects.filter(status__in=[2,3,4]).values('teacher_id'))
 
         if self.value() == 'mosk_all':
             return queryset.filter(id__in=Mymoskvichi.objects.values('teacher_id'))
@@ -53,8 +53,15 @@ class BaseAdmin(admin.ModelAdmin):
         file_location = None
         try:
             file_location = os.path.join(settings.MEDIA_ROOT, 'pdf', self.name, f'{reg_number}.pdf')
-            response = FileResponse(open(file_location, 'rb'))
-            return response
+            if os.path.exists(file_location) and os.path.getsize(file_location) > 0:
+                response = FileResponse(open(file_location, 'rb'))
+                return response
+            else:
+                generate_barcode(queryset[0].reg_number)
+                generate_pdf(queryset[0].get_parm_for_pdf(), queryset[0].name, queryset[0].alias, queryset[0].reg_number)
+                response = FileResponse(open(file_location, 'rb'))
+                return response
+
         except:
             self.message_user(request, "{} не найден".format(file_location))
             return HttpResponseRedirect(request.get_full_path())

@@ -47,11 +47,12 @@ def send_mails_admin_tacks(list_email,message,subject):
 @shared_task
 def send_mails_to_teacher_with_zip(teacher_id,field_names,exclude_field,email,message_template,filter):
     if filter['artakiada']=='art_level_2':
-        data = Artakiada.objects.filter(teacher_id=teacher_id, status__in=[3, 4])
+        data_xls = Artakiada.objects.filter(teacher_id=teacher_id, status__in=[2,3, 4])
+        data=data_xls.filter(status__in=[3,4])
     else:
         data = Artakiada.objects.filter(teacher_id=teacher_id)
     xls_path = os.path.join(settings.MEDIA_ROOT, 'xls', '{}.xls'.format(teacher_id))
-    utils.generate_xls(data, field_names, exclude_field, xls_path)
+    utils.generate_xls(data_xls, field_names, exclude_field, xls_path)
     with zipfile.ZipFile(os.path.join(settings.MEDIA_ROOT, 'zip', '{}.zip'.format(str(teacher_id))), 'w') as z:
         z.write(xls_path, '{}.xls'.format(teacher_id))
         for obj in data:
