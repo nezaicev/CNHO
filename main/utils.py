@@ -23,8 +23,7 @@ from reportlab.lib.styles import ParagraphStyle
 from main import lists
 
 
-def generate_xls(queryset,field_names,exclude_field,path):
-
+def generate_xls(queryset, field_names, exclude_field, path):
     wb = xlwt.Workbook(encoding='utf-8')
     ws = wb.add_sheet('Users')
 
@@ -74,7 +73,7 @@ def generate_report(model):
     row_num += 1
 
     for rindx, district in enumerate(lists.DISTRICT):
-        row_num+=1
+        row_num += 1
         ws.write(row_num, 0, district[1], font_style)
         ws.write(row_num, 1, model.objects.filter(district=district[0]).count(), font_style)
         ws.write(row_num, 2, model.objects.filter(district=district[0], status=2).count(), font_style)
@@ -82,14 +81,14 @@ def generate_report(model):
         ws.write(row_num, 4, model.objects.filter(district=district[0], status=4).count(), font_style)
         ws.write(row_num, 5, model.objects.filter(district=district[0], status='').count(), font_style)
         ws.write(row_num, 6, model.objects.filter(district=district[0],
-                                                level__in=[0, 1, 2, 3, 4]).count(),font_style)
+                                                  level__in=[0, 1, 2, 3, 4]).count(), font_style)
         ws.write(row_num, 7, model.objects.filter(district=district[0],
-                                                level__in=[5, 6, 7, 8]).count(),font_style)
+                                                  level__in=[5, 6, 7, 8]).count(), font_style)
         # row_num = rindx
-    row_num+=3
+    row_num += 3
     ws.write(row_num, 0, 'Общее колличество участников: ', font_style)
-    ws.write(row_num , 1, model.objects.all().count(), font_style)
-    row_num+=1
+    ws.write(row_num, 1, model.objects.all().count(), font_style)
+    row_num += 1
     ws.write(row_num, 0, 'Москва', font_style)
     ws.write(row_num, 1, model.objects.filter(region=77).count(), font_style)
     row_num += 1
@@ -98,10 +97,9 @@ def generate_report(model):
     row_num += 1
     ws.write(row_num, 0, 'Регионы', font_style)
     ws.write(row_num, 1, model.objects.exclude(region__in=[77, 50]).count(), font_style)
-    row_num+=1
+    row_num += 1
     ws.write(row_num, 0, 'Дата формирования отчета', font_style)
-    ws.write(row_num, 1,str(date.today()) , font_style)
-
+    ws.write(row_num, 1, str(date.today()), font_style)
 
     # Sheet body, remaining rows
     font_style = xlwt.XFStyle()
@@ -128,6 +126,7 @@ def rotate_img(path):
 
     except (AttributeError, KeyError, IndexError):
         pass
+
 
 def generate_barcode(reg_number):
     EAN = barcode.get_barcode_class('code128')
@@ -219,6 +218,10 @@ def send_mail_from_admin(secret, list_emails, message, subject):
 
 
 def generate_year():
-    year_contest = '{}-{} год'.format(int(time.strftime("%Y", time.localtime()))-1,
-                                      int(time.strftime("%Y", time.localtime())) + 1-1)
+    if int(time.strftime('%m', time.localtime())) < 7:
+        year_contest = '{}-{} год'.format(int(time.strftime("%Y", time.localtime())) - 1,
+                                          int(time.strftime("%Y", time.localtime())) + 1 - 1)
+    else:
+        year_contest = '{}-{} год'.format(int(time.strftime("%Y", time.localtime())),
+                                          int(time.strftime("%Y", time.localtime())) + 1)
     return year_contest
