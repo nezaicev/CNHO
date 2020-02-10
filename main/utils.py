@@ -219,6 +219,6 @@ def send_mail_from_admin(secret, list_emails, message, subject):
 
 
 def generate_year():
-    year_contest = '{}-{} год'.format(time.strftime("%Y", time.localtime()),
-                                      int(time.strftime("%Y", time.localtime())) + 1)
+    year_contest = '{}-{} год'.format(int(time.strftime("%Y", time.localtime()))-1,
+                                      int(time.strftime("%Y", time.localtime())) + 1-1)
     return year_contest
