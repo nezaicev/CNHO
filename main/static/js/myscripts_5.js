@@ -37,7 +37,8 @@ function setValueFIO(id, name) {
     var elements = document.getElementsByName(name);
     var value = '';
     var step = 0;
-    elements.forEach(function (item, i, arr) {
+    $.each(elements,function (i, item) {
+    // elements.forEach(function (item, i, arr) {
 
         if (item.value.toLowerCase() !== item.value.toUpperCase()) {
             var str = item.value.trim();
@@ -74,7 +75,8 @@ function setValueFIOmymoskvichi(id, name) {
 
     var value = '';
     var step = 0;
-    elements.forEach(function (item, i, arr) {
+    $.each(elements,function (i, item) {
+    // elements.forEach(function (item, i, arr) {
 
         if (item.value.toLowerCase() !== item.value.toUpperCase()) {
             var str = item.value.trim();
@@ -118,4 +120,18 @@ function addBlockFio(parent, child) {
         }
     });
     parent.appendChild(child);
+}
+
+function cloneNode(node) {
+    // If the node is a text node, then re-create it rather than clone it
+    var clone = node.nodeType == 3 ? document.createTextNode(node.nodeValue) : node.cloneNode(false);
+
+    // Recurse
+    var child = node.firstChild;
+    while(child) {
+        clone.appendChild(cloneNode(child));
+        child = child.nextSibling;
+    }
+
+    return clone;
 }
