@@ -79,7 +79,11 @@ class BaseAdmin(admin.ModelAdmin):
     def send_emails(self, request, queryset):
         if 'apply' in request.POST:
             list_emails = list(queryset.values_list('email', flat=True))
-            send_mails_admin_tacks.delay(list_emails, request.POST['editor'], request.POST['theme'])
+
+            for item in list_emails:
+                list_one_email = []
+                list_one_email.append(item)
+                send_mails_admin_tacks.delay(list_one_email, request.POST['editor'], request.POST['theme'])
             self.message_user(request, "{} отправлено".format(queryset.count()))
             return HttpResponseRedirect(request.get_full_path())
 
