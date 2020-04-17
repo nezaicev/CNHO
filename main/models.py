@@ -65,6 +65,7 @@ class Artakiada(Contest):
     alias = 'artakiada'
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, null=True)
     level = models.CharField(max_length=2, choices=lists.LEVEL, blank=False, verbose_name='Класс')
+    image = models.ImageField(upload_to='images/artakiada/',  blank=True)
 
     def __str__(self):
         return str(self.reg_number)
