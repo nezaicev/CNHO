@@ -134,7 +134,7 @@ class ArtakiadaAdmin(BaseAdmin):
     name = 'artakiada'
     task_reg_info = artakiada_tasks
     search_fields = ('reg_number', 'email', 'fio', 'fio_teacher')
-    list_display = ('reg_number', 'fio', 'school', 'region', 'district', 'fio_teacher', 'teacher', 'status')
+    list_display = ('reg_number', 'fio','status','image_tag', 'school', 'region', 'district', 'fio_teacher', 'teacher', )
     list_editable = ('status',)
     list_filter = ['status', 'district']
     actions = ['send_emails', 'export_as_csv', 'send_reg_info', 'export_list_info', 'export_as_xls', 'get_report']

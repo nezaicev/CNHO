@@ -89,6 +89,13 @@ class Artakiada(Contest):
             ('Email педагога', self.teacher.email)
         )
         return parameters
+    def image_tag(self):
+        if self.image:
+            return mark_safe('<a  href="%s" class="image-link">img</a>' % self.image.url)
+        else:
+            return 'No Image Found'
+
+    image_tag.short_description = 'Image'
 
 
 class NRusheva(Contest):
