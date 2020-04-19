@@ -23,8 +23,8 @@ class Command(BaseCommand):
                     print(i['fio'],i['fio_teacher'],i['school'],i['reg_number'])
                     q=input("Введите y или n :")
                     if q=='y':
-                        user=Artakiada.objects.get(reg_number=user_list[0]['reg_number'])
-                        user.image=os.path.join(directory,f)
+                        user=Artakiada.objects.get(reg_number=i['reg_number'])
+                        user.image=os.path.join('images/artakiada',f)
                         user.status='5'
                         user.save()
                         break
