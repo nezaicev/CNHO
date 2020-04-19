@@ -24,7 +24,7 @@ class Command(BaseCommand):
                     q=input("Введите y или n :")
                     if q=='y':
                         user=Artakiada.objects.get(reg_number=i['reg_number'])
-                        user.image=os.path.join('images/artakiada',f)
+                        user.image=os.path.join('images/artakiada',directory.split('/')[-1],f)
                         user.status='5'
                         user.save()
                         break
